@@ -1,10 +1,17 @@
 package com.ute.sunshinebackend.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -12,27 +19,8 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    public Role() {
-        super();
-    }
-
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    @Override
+    public String getAuthority() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

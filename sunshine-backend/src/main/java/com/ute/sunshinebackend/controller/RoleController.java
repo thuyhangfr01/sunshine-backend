@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/roles")
+@RequestMapping("/api/v1")
 public class RoleController {
     @Autowired
     RoleRepository roleRepository;
@@ -18,7 +18,7 @@ public class RoleController {
 
 
     // Get all Users
-    @GetMapping
+    @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
 
         List<Role> roles = new ArrayList<Role>();
