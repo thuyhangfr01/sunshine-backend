@@ -1,7 +1,11 @@
-package com.ute.sunshinebackend.security.requests;
+package com.ute.sunshinebackend.security.payload.requests;
 
-public class AuthenticationRequest {
+import javax.validation.constraints.NotBlank;
+
+public class LoginRequest {
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
 
     public String getEmail() {
