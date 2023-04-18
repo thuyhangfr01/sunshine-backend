@@ -14,8 +14,11 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(	name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "email")
+        })
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -50,40 +53,12 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id")
     )
-    private List<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
+    public User(String name, String email, String phone, String password) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
     }
 }

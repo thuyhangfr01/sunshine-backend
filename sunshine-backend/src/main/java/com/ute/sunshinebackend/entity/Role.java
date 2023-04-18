@@ -11,16 +11,12 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Override
-    public String getAuthority() {
-        return name;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
 }
