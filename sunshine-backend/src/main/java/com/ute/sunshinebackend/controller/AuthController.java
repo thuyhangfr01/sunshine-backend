@@ -87,44 +87,34 @@ public class AuthController {
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_COLLABORATOR)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
+        strRoles.forEach(role -> {
+            switch (role) {
+                case "admin":
+                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
 
-                        break;
-                    case "collaborator":
-                        Role collaRole = roleRepository.findByName(ERole.ROLE_COLLABORATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(collaRole);
+                    break;
+                case "collaborator":
+                    Role collaRole = roleRepository.findByName(ERole.ROLE_COLLABORATOR)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(collaRole);
 
-                        break;
-                    case "benefactor":
-                        Role beneRole = roleRepository.findByName(ERole.ROLE_BENEFACTOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(beneRole);
+                    break;
+                case "benefactor":
+                    Role beneRole = roleRepository.findByName(ERole.ROLE_BENEFACTOR)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(beneRole);
 
-                        break;
-                    case "recipient":
-                        Role recipRole = roleRepository.findByName(ERole.ROLE_RECIPIENT)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(recipRole);
+                    break;
+                case "recipient":
+                    Role recipRole = roleRepository.findByName(ERole.ROLE_RECIPIENT)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(recipRole);
 
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_COLLABORATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
+                    break;
+            }
+        });
 
         user.setRoles(roles);
         userRepository.save(user);
