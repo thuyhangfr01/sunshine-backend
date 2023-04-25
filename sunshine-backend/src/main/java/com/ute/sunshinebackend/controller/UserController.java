@@ -1,42 +1,41 @@
 package com.ute.sunshinebackend.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ute.sunshinebackend.entity.User;
+import com.ute.sunshinebackend.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/info")
+@RequestMapping("/api/users")
 public class UserController {
-    @GetMapping("/all")
-    public String allAccess() {
-        return "Public Content.";
+    @Autowired
+    private IUserService iUserService;
+
+    //api update user
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user){
+        return iUserService.updateUser(id, user);
     }
 
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminAccess() {
-        return "Admin Board.";
+    //api delete user
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id){
+        return iUserService.deleteUserById(id);
     }
 
-    @GetMapping("/collaborator")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
-    public String collaAccess() {
-        return "Collaborator Board.";
+    //api get all users
+    @GetMapping("/list")
+    public ResponseEntity<List<User>> getAllUsers(){
+        return iUserService.getAllUser();
     }
 
-
-    @GetMapping("/recipient")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR') or hasRole('RECIPIENT')")
-    public String recipAccess() {
-        return "Recipient Board.";
-    }
-
-    @GetMapping("/benefactor")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR') or hasRole('BENEFACTOR')")
-    public String beneAccess() {
-        return "Benefactor Board.";
+    //api get user by id
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") long id){
+        return iUserService.getUserById(id);
     }
 }

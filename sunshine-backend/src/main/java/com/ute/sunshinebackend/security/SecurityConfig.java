@@ -29,6 +29,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class SecurityConfig{
+    static final String[] PERMIT_ALL_PATTERNS = new String[] { "/api/auth/**", "/api/users/**"};
+    static final String[] IGNORE_PATTERNS = new String[] { "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/swagger-ui/index.html/**", "/javainuse-openapi/**"};
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -67,8 +73,8 @@ public class SecurityConfig{
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/info/**").permitAll()
-                .antMatchers("/swagger-ui/index.html/**").permitAll()
+                .antMatchers("/api/users/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
@@ -76,6 +82,11 @@ public class SecurityConfig{
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() throws Exception{
+        return (web) -> web.ignoring().antMatchers(IGNORE_PATTERNS);
     }
 }
 

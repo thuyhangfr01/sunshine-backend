@@ -6,17 +6,19 @@ import lombok.Data;
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private long id;
+    private String refreshToken;
+    private Long id;
     private String name;
     private String email;
     private String phone;
     private String password;
     private String street;
-    private long id_ward;
+    private Long id_ward;
     private Object roles;
 
-    public JwtResponse(String token, long id, String name, String email, String phone, String password, String street, long id_ward, Object roles) {
-        this.token = token;
+    public JwtResponse(String accessToken, String refreshToken, Long id, String name, String email, String phone, String password, String street, long id_ward, Object roles) {
+        this.token = accessToken;
+        this.refreshToken = refreshToken;
         this.id = id;
         this.name = name;
         this.email = email;
@@ -24,6 +26,14 @@ public class JwtResponse {
         this.password = password;
         this.street = street;
         this.id_ward = id_ward;
+        this.roles = roles;
+    }
+
+    public JwtResponse(String accessToken, String refreshToken, Long id, String name, Object roles) {
+        this.token = accessToken;
+        this.refreshToken = refreshToken;
+        this.id = id;
+        this.name = name;
         this.roles = roles;
     }
 }
