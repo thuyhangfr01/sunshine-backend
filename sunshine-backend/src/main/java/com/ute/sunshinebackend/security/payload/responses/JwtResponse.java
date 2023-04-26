@@ -13,10 +13,9 @@ public class JwtResponse {
     private String phone;
     private String password;
     private String street;
-    private Long id_ward;
     private Object roles;
 
-    public JwtResponse(String accessToken, String refreshToken, Long id, String name, String email, String phone, String password, String street, long id_ward, Object roles) {
+    public JwtResponse(String accessToken, String refreshToken, Long id, String name, String email, String phone, String password, String street, Object roles) {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
@@ -25,7 +24,6 @@ public class JwtResponse {
         this.phone = phone;
         this.password = password;
         this.street = street;
-        this.id_ward = id_ward;
         this.roles = roles;
     }
 
