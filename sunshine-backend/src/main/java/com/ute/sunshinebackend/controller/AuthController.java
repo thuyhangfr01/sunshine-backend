@@ -85,7 +85,6 @@ public class AuthController {
                 userDetails.getPhone(),
                 userDetails.getPassword(),
                 userDetails.getStreet(),
-                userDetails.getId_ward(),
                 roles));
 
     }

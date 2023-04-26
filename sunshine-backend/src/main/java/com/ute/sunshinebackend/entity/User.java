@@ -41,9 +41,6 @@ public class User{
     @Column(name = "street")
     private String street;
 
-    @Column(name = "id_ward")
-    private long id_ward;
-
     @Column(name = "enabled")
     private boolean enabled = true;
 
