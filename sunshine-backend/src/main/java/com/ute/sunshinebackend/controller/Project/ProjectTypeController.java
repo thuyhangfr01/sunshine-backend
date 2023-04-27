@@ -12,32 +12,33 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
-@RequestMapping("/api/projectTypes")
+@RequestMapping("/api")
 public class ProjectTypeController {
     @Autowired
     ProjectTypeService projectTypeService;
 
-    //api add type
-    @PostMapping("/add")
-    public ResponseEntity<ProjectType> addType(@RequestBody ProjectType projectType){
-        return projectTypeService.addType(projectType);
-    }
-
-    //api update type
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ProjectType> updateType(@PathVariable("id") long id, @RequestBody ProjectType projectType){
-        return projectTypeService.updateType(id, projectType);
-    }
-
     //api get all types
-    @GetMapping("/list")
+    @GetMapping("/project/types")
     public ResponseEntity<List<ProjectType>> getAllUsers(){
         return projectTypeService.getAllType();
     }
 
     //api get type by id
-    @GetMapping("/{id}")
+    @GetMapping("/project/type/{id}")
     public ResponseEntity<ProjectType> getUser(@PathVariable("id") long id){
         return projectTypeService.getTypeById(id);
     }
+
+    //api add type
+    @PostMapping("/project/type")
+    public ResponseEntity<ProjectType> addType(@RequestBody ProjectType projectType){
+        return projectTypeService.addType(projectType);
+    }
+
+    //api update type
+    @PutMapping("/project/type/{id}")
+    public ResponseEntity<ProjectType> updateType(@PathVariable("id") long id, @RequestBody ProjectType projectType){
+        return projectTypeService.updateType(id, projectType);
+    }
+
 }

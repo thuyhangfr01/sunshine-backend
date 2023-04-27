@@ -10,32 +10,33 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    //api update user
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user){
-        return userService.updateUser(id, user);
-    }
-
-    //api delete user
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id){
-        return userService.deleteUserById(id);
-    }
-
     //api get all users
-    @GetMapping("/list")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         return userService.getAllUser();
     }
 
     //api get user by id
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id){
         return userService.getUserById(id);
     }
+
+    //api update user
+    @PutMapping("/user/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user){
+        return userService.updateUser(id, user);
+    }
+
+    //api delete user
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id){
+        return userService.deleteUserById(id);
+    }
+
 }
