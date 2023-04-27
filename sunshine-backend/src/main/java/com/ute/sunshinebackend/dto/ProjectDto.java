@@ -8,23 +8,24 @@ import java.util.Date;
 public class ProjectDto {
     private String name;
     private String details;
-    private Long idType;
-    private Long numVolunteers;
+    private long numVolunteers;
+    private long statusId = 1;
+    private String position;
     private Date startTime;
     private Date endTime;
     private Date holdTime;
-    private String position;
-    private Long idWard;
 
-    public ProjectDto(String name, String details, Long idType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, Long idWard) {
+    public ProjectDto(String name, String details, long numVolunteers, long statusId, String position, Date startTime, Date endTime, Date holdTime) {
         this.name = name;
         this.details = details;
-        this.idType = idType;
         this.numVolunteers = numVolunteers;
+        this.statusId = statusId;
+        this.position = position;
         this.startTime = startTime;
         this.endTime = endTime;
         this.holdTime = holdTime;
-        this.position = position;
-        this.idWard = idWard;
+    }
+
+    public ProjectDto() {
     }
 }

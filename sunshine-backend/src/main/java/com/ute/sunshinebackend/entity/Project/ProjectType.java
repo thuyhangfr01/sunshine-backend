@@ -3,11 +3,13 @@ package com.ute.sunshinebackend.entity.Project;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Data
-@Entity(name = "project_types")
-public class ProjectType {
+@Entity
+@Table(name = "project_types")
+public class ProjectType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +19,9 @@ public class ProjectType {
 
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy="projectType")
 //    private List<Project> projectList = new ArrayList<>();
+
+    @OneToMany(targetEntity = Project.class, mappedBy = "projectType", orphanRemoval = false, fetch = FetchType.LAZY)
+    private Set<Project> projects;
 
     public ProjectType(String name) {
         this.name = name;
