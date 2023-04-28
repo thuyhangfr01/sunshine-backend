@@ -11,7 +11,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
 @RequestMapping("/api")
 public class ProjectTypeController {
     @Autowired
@@ -31,12 +30,14 @@ public class ProjectTypeController {
 
     //api add type
     @PostMapping("/project/type")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectType> addType(@RequestBody ProjectType projectType){
         return projectTypeService.addType(projectType);
     }
 
     //api update type
     @PutMapping("/project/type/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectType> updateType(@PathVariable("id") long id, @RequestBody ProjectType projectType){
         return projectTypeService.updateType(id, projectType);
     }
