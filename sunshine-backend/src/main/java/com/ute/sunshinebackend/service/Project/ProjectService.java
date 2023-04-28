@@ -1,28 +1,36 @@
 package com.ute.sunshinebackend.service.Project;
 
-import com.ute.sunshinebackend.dto.ProjectDto;
-import com.ute.sunshinebackend.dto.ProjectJoinDto;
+import com.ute.sunshinebackend.dto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectListDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ProjectService {
     //get all projects
-    public ResponseEntity<List<ProjectJoinDto>> getAllProjects();
+    public ResponseEntity<List<ProjectListDto>> getAllProjects();
 
     //get all projects by typeId
+    public ResponseEntity<List<ProjectListDto>> getProjectsByTypeId(Long typeId);
 
     //get all projects by statusId
+    public ResponseEntity<List<ProjectListDto>> getProjectsByStatusId(Long statusId);
 
     //get top 5 projects by created_at
+    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable);
 
     //get project by id
+    public ResponseEntity<ProjectListDto> getProjectById(Long id);
 
-    //add project by type id (list money - list artifacts - images)
-    public ResponseEntity<ProjectDto> addProject(Long idType, ProjectDto projectDtoRequest);
+    //add project by type id
+    public ResponseEntity<ProjectCreatorDto> addProject(Long idType, ProjectCreatorDto projectCreatorDtoRequest);
 
-    //update project (list money - list artifacts - images - proof - type)
+    //update project by id
+    public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto);
 
-    //delete project
+    //delete project by id
+    public ResponseEntity<Boolean> deleteProject(Long id);
 
     //search by nameProject - pagination
 }

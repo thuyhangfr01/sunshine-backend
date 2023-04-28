@@ -1,15 +1,11 @@
 package com.ute.sunshinebackend.dto;
 
-import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
-import com.ute.sunshinebackend.entity.Project.ProjectImage;
-import com.ute.sunshinebackend.entity.Project.ProjectMoney;
-import com.ute.sunshinebackend.entity.Project.ProjectProof;
 import lombok.Data;
 
 import java.util.*;
 
 @Data
-public class ProjectJoinDto {
+public class ProjectListDto {
     private String projName;
     private String details;
     private String typeName;
@@ -28,10 +24,10 @@ public class ProjectJoinDto {
 //    ProjectMoney projectMonies;
 //    ProjectArtifact projectArtifacts;
 
-    public ProjectJoinDto() {
+    public ProjectListDto() {
     }
 
-    public ProjectJoinDto(String projName, String details, String typeName, long numVolunteers, String statusName, String position, Date startTime, Date endTime, Date holdTime) {
+    public ProjectListDto(String projName, String details, String typeName, long numVolunteers, String statusName, String position, Date startTime, Date endTime, Date holdTime) {
         this.projName = projName;
         this.details = details;
         this.typeName = typeName;

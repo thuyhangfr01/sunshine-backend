@@ -15,8 +15,6 @@ public class RoleController {
     @Autowired
     RoleRepository roleRepository;
 
-
-
     // Get all Users
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {

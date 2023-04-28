@@ -5,6 +5,7 @@ import com.ute.sunshinebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -29,12 +30,14 @@ public class UserController {
 
     //api update user
     @PutMapping("/user/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user){
         return userService.updateUser(id, user);
     }
 
     //api delete user
     @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id){
         return userService.deleteUserById(id);
     }

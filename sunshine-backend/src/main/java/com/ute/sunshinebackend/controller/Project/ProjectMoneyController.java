@@ -23,11 +23,13 @@ public class ProjectMoneyController {
     }
 
     @PostMapping("/project/{id}/money")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectMoney> addMoney(@PathVariable("id") Long projectId, @RequestBody ProjectMoney projectMoney){
         return projectMoneyService.addMoney(projectId, projectMoney);
     }
 
     @PutMapping("/project/money/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectMoney> updateMoney(@PathVariable("id") Long id, @RequestBody ProjectMoney projectMoney){
         return projectMoneyService.updateMoney(id, projectMoney);
     }

@@ -11,7 +11,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
 @RequestMapping("/api")
 public class ProjectArtifactController {
     @Autowired
@@ -23,21 +22,25 @@ public class ProjectArtifactController {
     }
 
     @PostMapping("/project/{id}/artifact")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectArtifact> addArtifact(@PathVariable("id") Long projectId, @RequestBody ProjectArtifact projectArtifact){
         return projectArtifactService.addArtifact(projectId, projectArtifact);
     }
 
     @PutMapping("/project/artifact/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectArtifact> updateArtifact(@PathVariable("id") Long id, @RequestBody ProjectArtifact projectArtifact){
         return projectArtifactService.updateArtifact(id, projectArtifact);
     }
 
     @DeleteMapping("/project/{id}/artifacts")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteAllArtifacts(@PathVariable("id") Long projectId){
         return projectArtifactService.deleteAllArtifact(projectId);
     }
 
     @DeleteMapping("/project/artifact/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteArtifact(@PathVariable("id") Long id){
         return projectArtifactService.deleteArtifact(id);
     }

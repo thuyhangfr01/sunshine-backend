@@ -23,16 +23,19 @@ public class ProjectImageController {
     }
 
     @PostMapping("/project/{id}/image")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectImage> addImage(@PathVariable("id") Long idProject, @RequestBody ProjectImage projectImage){
         return projectImageService.addImage(idProject, projectImage);
     }
 
     @DeleteMapping("/project/{id}/images")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteAllImages(@PathVariable("id") Long idProject){
         return projectImageService.deleteAllImages(idProject);
     }
 
     @DeleteMapping("/project/image/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteImage(@PathVariable("id") Long id){
         return projectImageService.deteleImageById(id);
     }
