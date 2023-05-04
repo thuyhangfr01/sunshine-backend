@@ -62,4 +62,6 @@ public class ProjectTypeServiceImpl implements ProjectTypeService {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+
 }

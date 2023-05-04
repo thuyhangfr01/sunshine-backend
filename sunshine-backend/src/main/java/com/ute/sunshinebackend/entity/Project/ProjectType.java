@@ -1,10 +1,13 @@
 package com.ute.sunshinebackend.entity.Project;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+
+import static org.hibernate.annotations.FetchMode.SELECT;
 
 @Data
 @Entity
@@ -20,8 +23,8 @@ public class ProjectType implements Serializable {
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy="projectType")
 //    private List<Project> projectList = new ArrayList<>();
 
-    @OneToMany(targetEntity = Project.class, mappedBy = "projectType", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<Project> projects;
+//    @OneToMany(mappedBy = "projectType")
+//    private List<Project> projects;
 
     public ProjectType(String name) {
         this.name = name;

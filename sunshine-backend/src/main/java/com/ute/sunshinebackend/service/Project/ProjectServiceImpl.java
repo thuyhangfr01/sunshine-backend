@@ -11,6 +11,7 @@ import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,78 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<List<ProjectListDto>> getAllProjects() {
         List<ProjectListDto> list = projectRepository.getAllProjects();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllProjects(String name, int page, int size) {
+        try {
+            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            Pageable paging = PageRequest.of(page, size);
+
+            Page<ProjectListDto> pageProjs;
+            if (name == null)
+                pageProjs = projectRepository.getAllProjects(paging);
+            else
+                pageProjs = projectRepository.findByNameContaining(name, paging);
+
+            projects = pageProjs.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("projects", projects);
+            response.put("currentPage", pageProjs.getNumber());
+            response.put("totalItems", pageProjs.getTotalElements());
+            response.put("totalPages", pageProjs.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getProjectsByTypeId(Long idType, int page, int size) {
+        try {
+            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            Pageable paging = PageRequest.of(page, size);
+
+            Page<ProjectListDto> pageProjs;
+            pageProjs = projectRepository.findByProjectTypeId(idType, paging);
+
+            projects = pageProjs.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("projects", projects);
+            response.put("currentPage", pageProjs.getNumber());
+            response.put("totalItems", pageProjs.getTotalElements());
+            response.put("totalPages", pageProjs.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getProjectsByStatusId(Long idStatus, int page, int size) {
+        try {
+            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            Pageable paging = PageRequest.of(page, size);
+
+            Page<ProjectListDto> pageProjs;
+            pageProjs = projectRepository.findByProjectStatusId(idStatus, paging);
+
+            projects = pageProjs.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("projects", projects);
+            response.put("currentPage", pageProjs.getNumber());
+            response.put("totalItems", pageProjs.getTotalElements());
+            response.put("totalPages", pageProjs.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
