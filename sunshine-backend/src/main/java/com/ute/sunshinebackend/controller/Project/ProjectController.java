@@ -27,15 +27,36 @@ public class ProjectController {
         return projectService.getAllProjects();
     }
 
-    @GetMapping("/type/{id}/projects")
-    public ResponseEntity<List<ProjectListDto>> getProjectsByTypeId(@PathVariable("id") Long typeId){
-        return projectService.getProjectsByTypeId(typeId);
+    @GetMapping("/allProjects")
+    public ResponseEntity<Map<String, Object>> getProjects(@RequestParam(required = false) String name,
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "6") int size){
+        return projectService.getAllProjects(name, page, size);
     }
 
-    @GetMapping("/status/{id}/projects")
-    public ResponseEntity<List<ProjectListDto>> getProjectsByStatusId(@PathVariable("id") Long statusId){
-        return projectService.getProjectsByTypeId(statusId);
+    @GetMapping("/type/projects")
+    public ResponseEntity<Map<String, Object>> getProjectsByTypeId(@RequestParam Long id,
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "6") int size){
+        return projectService.getProjectsByTypeId(id, page, size);
     }
+
+    @GetMapping("/status/projects")
+    public ResponseEntity<Map<String, Object>> getProjectByStatusId(@RequestParam Long id,
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "6") int size){
+        return projectService.getProjectsByStatusId(id, page, size);
+    }
+
+//    @GetMapping("/type/{id}/projects")
+//    public ResponseEntity<List<ProjectListDto>> getProjectsByTypeId(@PathVariable("id") Long typeId){
+//        return projectService.getProjectsByTypeId(typeId);
+//    }
+
+//    @GetMapping("/status/{id}/projects")
+//    public ResponseEntity<List<ProjectListDto>> getProjectsByStatusId(@PathVariable("id") Long statusId){
+//        return projectService.getProjectsByTypeId(statusId);
+//    }
 
     @GetMapping("/latestProjects")
     public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(){

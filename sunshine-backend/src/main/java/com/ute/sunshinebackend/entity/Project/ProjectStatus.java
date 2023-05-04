@@ -16,6 +16,6 @@ public class ProjectStatus {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(targetEntity = Project.class, mappedBy = "projectStatus", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<Project> projects;
+//    @OneToMany(targetEntity = Project.class, mappedBy = "projectStatus", orphanRemoval = false, fetch = FetchType.LAZY)
+//    private Set<Project> projects;
 }

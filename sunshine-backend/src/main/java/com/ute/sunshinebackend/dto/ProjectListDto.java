@@ -6,6 +6,7 @@ import java.util.*;
 
 @Data
 public class ProjectListDto {
+    private long projId;
     private String projName;
     private String details;
     private String typeName;
@@ -27,7 +28,8 @@ public class ProjectListDto {
     public ProjectListDto() {
     }
 
-    public ProjectListDto(String projName, String details, String typeName, long numVolunteers, String statusName, String position, Date startTime, Date endTime, Date holdTime) {
+    public ProjectListDto(long projId, String projName, String details, String typeName, long numVolunteers, String statusName, String position, Date startTime, Date endTime, Date holdTime) {
+        this.projId = projId;
         this.projName = projName;
         this.details = details;
         this.typeName = typeName;

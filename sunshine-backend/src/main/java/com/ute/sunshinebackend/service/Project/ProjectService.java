@@ -5,7 +5,7 @@ import com.ute.sunshinebackend.dto.ProjectListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import java.util.List;
+import java.util.*;
 
 public interface ProjectService {
     //get all projects
@@ -32,5 +32,9 @@ public interface ProjectService {
     //delete project by id
     public ResponseEntity<Boolean> deleteProject(Long id);
 
-    //search by nameProject - pagination
+    //pagination - sorting
+    public ResponseEntity<Map<String, Object>> getAllProjects(String name, int page, int size);
+    public ResponseEntity<Map<String, Object>> getProjectsByTypeId(Long idType, int page, int size);
+
+    public ResponseEntity<Map<String, Object>> getProjectsByStatusId(Long idStatus, int page, int size);
 }

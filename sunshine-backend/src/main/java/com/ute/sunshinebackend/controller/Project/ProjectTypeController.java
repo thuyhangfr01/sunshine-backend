@@ -18,13 +18,13 @@ public class ProjectTypeController {
 
     //api get all types
     @GetMapping("/project/types")
-    public ResponseEntity<List<ProjectType>> getAllUsers(){
+    public ResponseEntity<List<ProjectType>> getAllTypes(){
         return projectTypeService.getAllType();
     }
 
     //api get type by id
     @GetMapping("/project/type/{id}")
-    public ResponseEntity<ProjectType> getUser(@PathVariable("id") long id){
+    public ResponseEntity<ProjectType> getType(@PathVariable("id") long id){
         return projectTypeService.getTypeById(id);
     }
 
