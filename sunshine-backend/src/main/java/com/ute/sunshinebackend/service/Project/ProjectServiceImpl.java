@@ -34,20 +34,21 @@ public class ProjectServiceImpl implements ProjectService {
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity<List<ProjectListDto>> getAllProjects() {
-        List<ProjectListDto> list = projectRepository.getAllProjects();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<Project> getProjectById(Long projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        return new ResponseEntity<>(project.get(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getAllProjects(String name, int page, int size) {
+    public ResponseEntity<Map<String, Object>> getAll(String name, int page, int size) {
         try {
-            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            List<Project> projects = new ArrayList<Project>();
             Pageable paging = PageRequest.of(page, size);
 
-            Page<ProjectListDto> pageProjs;
+            Page<Project> pageProjs;
             if (name == null)
-                pageProjs = projectRepository.getAllProjects(paging);
+                pageProjs = projectRepository.findAll(paging);
             else
                 pageProjs = projectRepository.findByNameContaining(name, paging);
 
@@ -68,10 +69,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResponseEntity<Map<String, Object>> getProjectsByTypeId(Long idType, int page, int size) {
         try {
-            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            List<Project> projects = new ArrayList<Project>();
             Pageable paging = PageRequest.of(page, size);
 
-            Page<ProjectListDto> pageProjs;
+            Page<Project> pageProjs;
             pageProjs = projectRepository.findByProjectTypeId(idType, paging);
 
             projects = pageProjs.getContent();
@@ -91,10 +92,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResponseEntity<Map<String, Object>> getProjectsByStatusId(Long idStatus, int page, int size) {
         try {
-            List<ProjectListDto> projects = new ArrayList<ProjectListDto>();
+            List<Project> projects = new ArrayList<Project>();
             Pageable paging = PageRequest.of(page, size);
 
-            Page<ProjectListDto> pageProjs;
+            Page<Project> pageProjs;
             pageProjs = projectRepository.findByProjectStatusId(idStatus, paging);
 
             projects = pageProjs.getContent();
@@ -112,37 +113,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ResponseEntity<List<ProjectListDto>> getProjectsByTypeId(Long typeId) {
-        if (!projectTypeRepository.existsById(typeId)) {
-            throw new ResourceNotFoundException("Not found type with id = " + typeId);
-        }
-
-        List<ProjectListDto> projects = projectRepository.findByProjectTypeId(typeId);
+    public ResponseEntity<Page<Project>> getTop5LatestProject(Pageable pageable) {
+        Page<Project> projects = projectRepository.findByOrderByCreatedAtDesc(pageable);
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<ProjectListDto>> getProjectsByStatusId(Long statusId) {
-        if (!projectTypeRepository.existsById(statusId)) {
-            throw new ResourceNotFoundException("Not found status with id = " + statusId);
-        }
-
-        List<ProjectListDto> projects = projectRepository.findByProjectStatusId(statusId);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable) {
-        Page<ProjectListDto> projects = projectRepository.findTop5LatestProjects(pageable);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<ProjectListDto> getProjectById(Long projectId) {
-        Optional<ProjectListDto> project = projectRepository.getProjectById(projectId);
-
-        return new ResponseEntity<>(project.get(), HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable) {
+//        Page<ProjectListDto> projects = projectRepository.findTop5LatestProjects(pageable);
+//        return new ResponseEntity<>(projects, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<ProjectCreatorDto> addProject(Long idType, ProjectCreatorDto projectCreatorDtoRequest) {
