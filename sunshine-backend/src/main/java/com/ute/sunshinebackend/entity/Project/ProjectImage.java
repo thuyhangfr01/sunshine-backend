@@ -33,4 +33,9 @@ public class ProjectImage {
     public ProjectImage(String name) {
         this.name = name;
     }
+
+    public ProjectImage(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

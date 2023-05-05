@@ -11,7 +11,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
 @RequestMapping("/api")
 public class ProjectMoneyController {
     @Autowired

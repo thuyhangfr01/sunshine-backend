@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.*;
 
 
@@ -33,7 +33,6 @@ public class Project implements Serializable {
     @JoinColumn(name = "id_type", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)
-    @JsonIgnore
     private ProjectType projectType;
 
     @Column(name = "num_volunteers")
@@ -59,7 +58,6 @@ public class Project implements Serializable {
     @JoinColumn(name = "id_status", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)
-    @JsonIgnore
     private ProjectStatus projectStatus;
 //    @Column(name = "id_status")
 //    private long idStatus = 1;
@@ -73,16 +71,20 @@ public class Project implements Serializable {
     private Date updatedAt = Timestamp.valueOf(LocalDateTime.now());
 
     @OneToMany(targetEntity = ProjectImage.class, mappedBy = "project", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<ProjectImage> projectImages;
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProjectImage> projectImages;
 
     @OneToMany(targetEntity = ProjectProof.class, mappedBy = "project", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<ProjectProof> projectProofs;
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProjectProof> projectProofs;
 
     @OneToMany(targetEntity = ProjectMoney.class, mappedBy = "project", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<ProjectMoney> projectMonies;
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProjectMoney> projectMonies;
 
     @OneToMany(targetEntity = ProjectArtifact.class, mappedBy = "project", orphanRemoval = false, fetch = FetchType.LAZY)
-    private Set<ProjectArtifact> projectArtifacts;
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProjectArtifact> projectArtifacts;
 
     public Project(String name, String details, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position) {
         this.name = name;
@@ -94,7 +96,7 @@ public class Project implements Serializable {
         this.position = position;
     }
 
-    public Project(String name, String details, ProjectType projectType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, ProjectStatus projectStatus, Set<ProjectImage> projectImages, Set<ProjectProof> projectProofs, Set<ProjectMoney> projectMonies, Set<ProjectArtifact> projectArtifacts) {
+    public Project(String name, String details, ProjectType projectType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, ProjectStatus projectStatus, List<ProjectImage> projectImages, List<ProjectProof> projectProofs, List<ProjectMoney> projectMonies, List<ProjectArtifact> projectArtifacts) {
         this.name = name;
         this.details = details;
         this.projectType = projectType;

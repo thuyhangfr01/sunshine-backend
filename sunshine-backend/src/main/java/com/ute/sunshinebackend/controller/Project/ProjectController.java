@@ -2,6 +2,7 @@ package com.ute.sunshinebackend.controller.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectListDto;
+import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import com.ute.sunshinebackend.service.Project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,16 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
-    @Autowired
-    ProjectTypeRepository projectTypeRepository;
-
-    @GetMapping("/projects")
-    public ResponseEntity<List<ProjectListDto>> getAllProjects(){
-        return projectService.getAllProjects();
+    @GetMapping("/project/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable("id") Long id){
+        return projectService.getProjectById(id);
     }
 
     @GetMapping("/allProjects")
     public ResponseEntity<Map<String, Object>> getProjects(@RequestParam(required = false) String name,
                                                                    @RequestParam(defaultValue = "0") int page,
                                                                    @RequestParam(defaultValue = "6") int size){
-        return projectService.getAllProjects(name, page, size);
+        return projectService.getAll(name, page, size);
     }
 
     @GetMapping("/type/projects")
@@ -48,24 +46,14 @@ public class ProjectController {
         return projectService.getProjectsByStatusId(id, page, size);
     }
 
-//    @GetMapping("/type/{id}/projects")
-//    public ResponseEntity<List<ProjectListDto>> getProjectsByTypeId(@PathVariable("id") Long typeId){
-//        return projectService.getProjectsByTypeId(typeId);
+//    @GetMapping("/latestProjects")
+//    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(){
+//        return projectService.getTop5LatestProjects(PageRequest.of(0, 5));
 //    }
 
-//    @GetMapping("/status/{id}/projects")
-//    public ResponseEntity<List<ProjectListDto>> getProjectsByStatusId(@PathVariable("id") Long statusId){
-//        return projectService.getProjectsByTypeId(statusId);
-//    }
-
-    @GetMapping("/latestProjects")
-    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(){
-        return projectService.getTop5LatestProjects(PageRequest.of(0, 5));
-    }
-
-    @GetMapping("/project/{id}")
-    public ResponseEntity<ProjectListDto> getProjectById(@PathVariable("id") Long id){
-        return projectService.getProjectById(id);
+    @GetMapping("/latestProject")
+    public ResponseEntity<Page<Project>> getTop5LatestProject(){
+        return projectService.getTop5LatestProject(PageRequest.of(0, 5));
     }
 
     @PostMapping("/type/{id}/project")
