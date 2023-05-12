@@ -86,16 +86,6 @@ public class Project implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<ProjectArtifact> projectArtifacts;
 
-    public Project(String name, String details, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position) {
-        this.name = name;
-        this.details = details;
-        this.numVolunteers = numVolunteers;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.holdTime = holdTime;
-        this.position = position;
-    }
-
     public Project(String name, String details, ProjectType projectType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, ProjectStatus projectStatus, List<ProjectImage> projectImages, List<ProjectProof> projectProofs, List<ProjectMoney> projectMonies, List<ProjectArtifact> projectArtifacts) {
         this.name = name;
         this.details = details;
@@ -111,6 +101,33 @@ public class Project implements Serializable {
         this.projectMonies = projectMonies;
         this.projectArtifacts = projectArtifacts;
     }
+
+    public Project(Long id, String name, String details, ProjectType projectType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, ProjectStatus projectStatus) {
+        this.id = id;
+        this.name = name;
+        this.details = details;
+        this.projectType = projectType;
+        this.numVolunteers = numVolunteers;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.holdTime = holdTime;
+        this.position = position;
+        this.projectStatus = projectStatus;
+    }
+
+//    public Project(Long id, String name, String details, ProjectType projectType, Long numVolunteers, Date startTime, Date endTime, Date holdTime, String position, ProjectStatus projectStatus, List<ProjectMoney> projectMonies) {
+//        this.id = id;
+//        this.name = name;
+//        this.details = details;
+//        this.projectType = projectType;
+//        this.numVolunteers = numVolunteers;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.holdTime = holdTime;
+//        this.position = position;
+//        this.projectStatus = projectStatus;
+//        this.projectMonies = projectMonies;
+//    }
 
     public Project() {
     }

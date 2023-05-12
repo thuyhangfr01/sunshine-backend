@@ -10,13 +10,15 @@ import java.util.*;
 
 public interface ProjectService {
     public ResponseEntity<Project> getProjectById(Long id);
-    public ResponseEntity<ProjectCreatorDto> addProject(Long idType, ProjectCreatorDto projectCreatorDtoRequest);
-    public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto);
-    public ResponseEntity<Boolean> deleteProject(Long id);
     public ResponseEntity<Map<String, Object>> getAll(String name, int page, int size);
+    public ResponseEntity<List<Project>> getAllProjects();
     public ResponseEntity<Map<String, Object>> getProjectsByTypeId(Long idType, int page, int size);
     public ResponseEntity<Map<String, Object>> getProjectsByStatusId(Long idStatus, int page, int size);
     public ResponseEntity<Page<Project>> getTop5LatestProject(Pageable pageable);
+    public ResponseEntity<List<Project>> getLatestProject(String name);
+    public ResponseEntity<ProjectCreatorDto> addProject(ProjectCreatorDto projectCreatorDtoRequest);
+    public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto);
+    public ResponseEntity<Boolean> deleteProject(Long id);
 
 //    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable);
 }

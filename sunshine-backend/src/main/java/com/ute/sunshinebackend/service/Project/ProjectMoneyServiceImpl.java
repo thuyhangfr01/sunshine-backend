@@ -1,5 +1,6 @@
 package com.ute.sunshinebackend.service.Project;
 
+import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
 import com.ute.sunshinebackend.entity.Project.ProjectImage;
 import com.ute.sunshinebackend.entity.Project.ProjectMoney;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProjectMoneyServiceImpl implements ProjectMoneyService{
@@ -31,6 +32,11 @@ public class ProjectMoneyServiceImpl implements ProjectMoneyService{
     }
 
     @Override
+    public ResponseEntity<Optional<ProjectMoney>> getMoneyById(Long id) {
+        return new ResponseEntity<>(projectMoneyRepository.findById(id), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<ProjectMoney> addMoney(Long projectId, ProjectMoney projectMoney) {
         try {
             ProjectMoney projectMoney1 = projectRepository.findById(projectId).map(project -> {
@@ -45,9 +51,9 @@ public class ProjectMoneyServiceImpl implements ProjectMoneyService{
     }
 
     @Override
-    public ResponseEntity<ProjectMoney> updateMoney(Long id, ProjectMoney projectMoney) {
-        ProjectMoney projectMoney1 = projectMoneyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project money id " + id + "not found"));
+    public ResponseEntity<ProjectMoney> updateMoney(Long moneyId, ProjectMoney projectMoney) {
+        ProjectMoney projectMoney1 = projectMoneyRepository.findById(moneyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project money id " + moneyId + "not found"));
 
         projectMoney1.setMinMoney(projectMoney.getMinMoney());
 

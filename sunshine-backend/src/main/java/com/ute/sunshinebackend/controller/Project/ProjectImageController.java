@@ -22,7 +22,7 @@ public class ProjectImageController {
     }
 
     @PostMapping("/project/{id}/image")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectImage> addImage(@PathVariable("id") Long idProject, @RequestBody ProjectImage projectImage){
         return projectImageService.addImage(idProject, projectImage);
     }

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class ProjectArtifact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -28,6 +29,6 @@ public class ProjectArtifact {
     @Column(name = "min_quantity")
     private Long minQuantity;
 
-    @Column(name = "receiving_address")
-    private String receivingAddress;
+    @Column(name = "calculation_unit")
+    private String calculationUnit;
 }

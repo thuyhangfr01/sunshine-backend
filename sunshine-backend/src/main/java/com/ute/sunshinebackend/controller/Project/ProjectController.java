@@ -25,11 +25,16 @@ public class ProjectController {
         return projectService.getProjectById(id);
     }
 
-    @GetMapping("/allProjects")
+    @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getProjects(@RequestParam(required = false) String name,
                                                                    @RequestParam(defaultValue = "0") int page,
                                                                    @RequestParam(defaultValue = "6") int size){
         return projectService.getAll(name, page, size);
+    }
+
+    @GetMapping("/allProjects")
+    public ResponseEntity<List<Project>> getAllProjects(){
+        return projectService.getAllProjects();
     }
 
     @GetMapping("/type/projects")
@@ -51,25 +56,30 @@ public class ProjectController {
 //        return projectService.getTop5LatestProjects(PageRequest.of(0, 5));
 //    }
 
-    @GetMapping("/latestProject")
+    @GetMapping("/top5LatestProject")
     public ResponseEntity<Page<Project>> getTop5LatestProject(){
         return projectService.getTop5LatestProject(PageRequest.of(0, 5));
     }
 
-    @PostMapping("/type/{id}/project")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
-    public ResponseEntity<ProjectCreatorDto> addProject(@PathVariable(value = "id") long id, @RequestBody ProjectCreatorDto projectCreatorDto){
-        return projectService.addProject(id, projectCreatorDto);
+    @GetMapping("/latestProject")
+    public ResponseEntity<List<Project>> getLatestProject(@RequestParam(required = false) String name){
+        return projectService.getLatestProject(name);
+    }
+
+    @PostMapping("/project")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+    public ResponseEntity<ProjectCreatorDto> addProject(@RequestBody ProjectCreatorDto projectCreatorDto){
+        return projectService.addProject(projectCreatorDto);
     }
 
     @PutMapping("/project/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectCreatorDto> updateProject(@PathVariable(value = "id") long id, @RequestBody ProjectCreatorDto projectCreatorDto){
         return projectService.updateProject(id, projectCreatorDto);
     }
 
     @DeleteMapping("/project/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteProject(@PathVariable("id") Long id){
         return projectService.deleteProject(id);
     }

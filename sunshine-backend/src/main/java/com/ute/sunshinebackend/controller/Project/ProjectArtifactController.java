@@ -22,15 +22,15 @@ public class ProjectArtifactController {
     }
 
     @PostMapping("/project/{id}/artifact")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectArtifact> addArtifact(@PathVariable("id") Long projectId, @RequestBody ProjectArtifact projectArtifact){
         return projectArtifactService.addArtifact(projectId, projectArtifact);
     }
 
-    @PutMapping("/project/artifact/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
-    public ResponseEntity<ProjectArtifact> updateArtifact(@PathVariable("id") Long id, @RequestBody ProjectArtifact projectArtifact){
-        return projectArtifactService.updateArtifact(id, projectArtifact);
+    @PutMapping("/project/artifact/{artifactId}")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+    public ResponseEntity<ProjectArtifact> updateArtifact(@PathVariable("artifactId") Long artifactId, @RequestBody ProjectArtifact projectArtifact){
+        return projectArtifactService.updateArtifact(artifactId, projectArtifact);
     }
 
     @DeleteMapping("/project/{id}/artifacts")

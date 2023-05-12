@@ -23,5 +23,12 @@ public class ProjectMoney {
     private Project project;
 
     @Column(name = "min_money")
-    private BigDecimal minMoney;
+    private long minMoney;
+
+    public ProjectMoney(long minMoney) {
+        this.minMoney = minMoney;
+    }
+
+    public ProjectMoney() {
+    }
 }

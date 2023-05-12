@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -21,15 +21,20 @@ public class ProjectMoneyController {
         return  projectMoneyService.getMoney(projectId);
     }
 
+    @GetMapping("/project/money/{id}")
+    public ResponseEntity<Optional<ProjectMoney>> getMoneyById(@PathVariable("id") Long moneyId){
+        return  projectMoneyService.getMoneyById(moneyId);
+    }
+
     @PostMapping("/project/{id}/money")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectMoney> addMoney(@PathVariable("id") Long projectId, @RequestBody ProjectMoney projectMoney){
         return projectMoneyService.addMoney(projectId, projectMoney);
     }
 
-    @PutMapping("/project/money/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
-    public ResponseEntity<ProjectMoney> updateMoney(@PathVariable("id") Long id, @RequestBody ProjectMoney projectMoney){
-        return projectMoneyService.updateMoney(id, projectMoney);
+    @PutMapping("/project/money/{moneyId}")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+    public ResponseEntity<ProjectMoney> updateMoney(@PathVariable("moneyId") Long moneyId, @RequestBody ProjectMoney projectMoney){
+        return projectMoneyService.updateMoney(moneyId, projectMoney);
     }
 }
