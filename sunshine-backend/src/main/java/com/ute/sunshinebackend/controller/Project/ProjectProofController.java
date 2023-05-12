@@ -23,7 +23,7 @@ public class ProjectProofController {
     }
 
     @PostMapping("/project/{id}/proof")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<ProjectProof> addProof(@PathVariable("id") Long idProject, @RequestBody ProjectProof projectProof){
         return proofService.addProof(idProject, projectProof);
     }

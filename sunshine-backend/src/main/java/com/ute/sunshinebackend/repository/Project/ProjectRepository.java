@@ -21,6 +21,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> findByProjectTypeId(Long idType, Pageable pageable);
     Page<Project> findByProjectStatusId(Long idStatus, Pageable pageable);
     Page<Project> findByOrderByCreatedAtDesc(Pageable pageable);
+    List<Project> findByNameContainingOrderByCreatedAtDesc(String name);
+    List<Project> findByOrderByCreatedAtDesc();
     @Transactional
     void deleteById(Long id);
 //    @Query("SELECT new com.ute.sunshinebackend.dto.ProjectListDto(a.id, a.name, a.details, b.name, a.numVolunteers, c.name, a.position, a.startTime, a.endTime, a.holdTime) "

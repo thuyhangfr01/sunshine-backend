@@ -51,7 +51,7 @@ public class ProjectArtifactServiceImpl implements ProjectArtifactService{
 
         projectArtifact1.setArtifactName(projectArtifact.getArtifactName());
         projectArtifact1.setMinQuantity(projectArtifact.getMinQuantity());
-        projectArtifact1.setReceivingAddress(projectArtifact.getReceivingAddress());
+        projectArtifact1.setCalculationUnit(projectArtifact.getCalculationUnit());
 
         return new ResponseEntity<>(projectArtifactRepository.save(projectArtifact1), HttpStatus.OK);
     }

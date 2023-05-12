@@ -1,10 +1,11 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
-import com.ute.sunshinebackend.dto.ProjectListDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectMoney;
+import com.ute.sunshinebackend.entity.Project.ProjectType;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
+import com.ute.sunshinebackend.repository.Project.ProjectMoneyRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectStatusRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -29,6 +31,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     ProjectStatusRepository projectStatusRepository;
+
+    @Autowired
+    ProjectMoneyRepository projectMoneyRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -64,6 +69,12 @@ public class ProjectServiceImpl implements ProjectService {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<List<Project>> getAllProjects() {
+        List<Project> projects = projectRepository.findAll();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @Override
@@ -118,6 +129,22 @@ public class ProjectServiceImpl implements ProjectService {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<Project>> getLatestProject(String name) {
+        try {
+            List<Project> projects = new ArrayList<Project>();
+
+            if (name == null)
+                projectRepository.findByOrderByCreatedAtDesc().forEach(projects::add);
+            else
+                projectRepository.findByNameContainingOrderByCreatedAtDesc(name).forEach(projects::add);
+
+            return new ResponseEntity<>(projects, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 //    @Override
 //    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable) {
 //        Page<ProjectListDto> projects = projectRepository.findTop5LatestProjects(pageable);
@@ -125,56 +152,72 @@ public class ProjectServiceImpl implements ProjectService {
 //    }
 
     @Override
-    public ResponseEntity<ProjectCreatorDto> addProject(Long idType, ProjectCreatorDto projectCreatorDtoRequest) {
-        //convert dto to entity
-        Project projectRequest = modelMapper.map(projectCreatorDtoRequest, Project.class);
+    public ResponseEntity<ProjectCreatorDto> addProject(ProjectCreatorDto projectCreatorDtoRequest) {
+        try{
+            //convert dto to entity
+            modelMapper.getConfiguration().setAmbiguityIgnored(true);
+            Project projectRequest = modelMapper.map(projectCreatorDtoRequest, Project.class);
 
-        Project project = projectTypeRepository.findById(idType).map(projectType -> {
-            projectRequest.setProjectType(projectType);
+            projectTypeRepository.findById(projectCreatorDtoRequest.getTypeId()).map(projectType -> {
+                projectRequest.setProjectType(projectType);
 
-            return projectRepository.save(projectRequest);
-        }).orElseThrow(() -> new ResourceNotFoundException("Not found Project type with id = " + idType));
+                return projectRequest;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not found Project type with id"));
 
-        //convert entity to dto
-        ProjectCreatorDto projectCreatorDto = modelMapper.map(project, ProjectCreatorDto.class);
+            projectStatusRepository.findById(projectCreatorDtoRequest.getStatusId()).map(projectStatus -> {
+                projectRequest.setProjectStatus(projectStatus);
 
-        return new ResponseEntity<>(projectCreatorDto, HttpStatus.CREATED);
+                return projectRequest;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not status type with id"));
+
+            //convert entity to dto
+            ProjectCreatorDto projectCreatorDto = modelMapper.map(projectRepository.save(projectRequest), ProjectCreatorDto.class);
+
+            return new ResponseEntity<>(projectCreatorDto, HttpStatus.CREATED);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
     public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto) {
-        //convert dto to entity
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
-        Project projectRequest = modelMapper.map(projectCreatorDto, Project.class);
+        try{
+            //convert dto to entity
+            modelMapper.getConfiguration().setAmbiguityIgnored(true);
+            Project projectRequest = modelMapper.map(projectCreatorDto, Project.class);
 
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project id " + id + "not found"));
+            Project project = projectRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Project id " + id + "not found"));
 
-        project.setName(projectRequest.getName());
-        project.setDetails(projectRequest.getDetails());
-        project.setNumVolunteers(projectRequest.getNumVolunteers());
-        project.setPosition(projectRequest.getPosition());
-        project.setStartTime(projectRequest.getStartTime());
-        project.setEndTime(projectRequest.getEndTime());
-        project.setHoldTime(projectRequest.getHoldTime());
+                projectTypeRepository.findById(projectCreatorDto.getTypeId()).map(projectType -> {
+                projectRequest.setProjectType(projectType);
 
-        Project project1 = projectTypeRepository.findById(projectCreatorDto.getTypeId()).map(projectType -> {
-            projectRequest.setProjectType(projectType);
+                return projectRequest;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not found type with id"));
 
-            return projectRepository.save(projectRequest);
-        }).orElseThrow(() -> new ResourceNotFoundException("Not found type with id"));
+            projectStatusRepository.findById(projectCreatorDto.getStatusId()).map(projectStatus -> {
+                projectRequest.setProjectStatus(projectStatus);
 
-        Project project2 = projectStatusRepository.findById(projectCreatorDto.getStatusId()).map(projectStatus -> {
-            projectRequest.setProjectStatus(projectStatus);
+                return projectRequest;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-            return projectRepository.save(projectRequest);
-        }).orElseThrow(() -> new ResourceNotFoundException("Not status type with id"));
-
-        project.setProjectType(project1.getProjectType());
-        project.setProjectStatus(project2.getProjectStatus());
-        //convert entity to dto
-        ProjectCreatorDto projectCreatorDto1 = modelMapper.map(projectRepository.save(project), ProjectCreatorDto.class);
-        return new ResponseEntity<>(projectCreatorDto1, HttpStatus.OK);
+            project.setName(projectRequest.getName());
+            project.setDetails(projectRequest.getDetails());
+            project.setNumVolunteers(projectRequest.getNumVolunteers());
+            project.setPosition(projectRequest.getPosition());
+            project.setStartTime(projectRequest.getStartTime());
+            project.setEndTime(projectRequest.getEndTime());
+            project.setHoldTime(projectRequest.getHoldTime());
+            project.setProjectType(projectRequest.getProjectType());
+            project.setProjectStatus(projectRequest.getProjectStatus());
+            project.setUpdatedAt(projectRequest.getUpdatedAt());
+            //convert entity to dto
+            ProjectCreatorDto projectCreatorDto1 = modelMapper.map(projectRepository.save(project), ProjectCreatorDto.class);
+            return new ResponseEntity<>(projectCreatorDto1, HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -183,6 +226,4 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
-
 }
