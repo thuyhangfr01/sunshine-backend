@@ -53,7 +53,6 @@ public class Project implements Serializable {
     @Column(name = "position")
     private String position;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_status", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
