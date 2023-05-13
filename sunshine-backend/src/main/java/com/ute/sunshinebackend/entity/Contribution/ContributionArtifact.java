@@ -8,7 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-
+import java.util.*;
 @Data
 @Entity
 @Table(name = "contribution_artifacts")
@@ -30,7 +30,7 @@ public class ContributionArtifact {
     private String calculationUnit;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_status", nullable = false, columnDefinition = "int default 1")
+    @JoinColumn(name = "id_status", nullable = false, columnDefinition = "INT DEFAULT 1")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.JOIN)
     private ContributionStatus contributionStatus;
@@ -41,9 +41,6 @@ public class ContributionArtifact {
     @JsonIgnore
     private Contribution contribution;
 
-    public ContributionArtifact(String artifactName, Long donatedAmount, String calculationUnit) {
-        this.artifactName = artifactName;
-        this.donatedAmount = donatedAmount;
-        this.calculationUnit = calculationUnit;
+    public ContributionArtifact() {
     }
 }

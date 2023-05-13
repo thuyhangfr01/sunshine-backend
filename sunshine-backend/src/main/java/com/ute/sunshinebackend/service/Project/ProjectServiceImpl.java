@@ -189,8 +189,8 @@ public class ProjectServiceImpl implements ProjectService {
             Project project = projectRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Project id " + id + "not found"));
 
-                projectTypeRepository.findById(projectCreatorDto.getTypeId()).map(projectType -> {
-                projectRequest.setProjectType(projectType);
+            projectTypeRepository.findById(projectCreatorDto.getTypeId()).map(projectType -> {
+            projectRequest.setProjectType(projectType);
 
                 return projectRequest;
             }).orElseThrow(() -> new ResourceNotFoundException("Not found type with id"));

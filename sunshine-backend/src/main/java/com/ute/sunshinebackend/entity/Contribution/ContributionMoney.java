@@ -19,20 +19,12 @@ public class ContributionMoney {
     @Column(name = "amount_money")
     private Long amountMoney;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_status", nullable = false, columnDefinition = "int default 1")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
-    private ContributionStatus contributionStatus;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_status", referencedColumnName = "id")
+    private ContributionStatus mcontributionStatus;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id_contribution")
-    private Contribution contribution;
-
-    public ContributionMoney(Long amountMoney) {
-        this.amountMoney = amountMoney;
-    }
+//    @OneToOne(mappedBy = "contributionMoney")
+//    private Contribution contribution;
 
     public ContributionMoney() {
     }

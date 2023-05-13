@@ -14,4 +14,5 @@ public class ContributionStatus {
 
     @Column(name = "name")
     private String name;
+
 }
