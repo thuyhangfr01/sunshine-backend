@@ -1,10 +1,17 @@
 package com.ute.sunshinebackend.service.Contribution;
 
+import com.ute.sunshinebackend.dto.ContributionArtifactCreatorDto;
 import com.ute.sunshinebackend.dto.ContributionArtifactDto;
+import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
+import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
+import com.ute.sunshinebackend.entity.Project.Project;
+import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
+import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Contribution.ContributionArtifactRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionRepository;
+import com.ute.sunshinebackend.repository.Contribution.ContributionStatusRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +29,9 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
 
     @Autowired
     ContributionArtifactRepository contributionArtifactRepository;
+
+    @Autowired
+    ContributionStatusRepository contributionStatusRepository;
 
     @Override
     public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(Long contributionId) {
@@ -47,4 +57,51 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(Long contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto) {
+        try{
+            //convert dto to entity
+            modelMapper.getConfiguration().setAmbiguityIgnored(true);
+            ContributionArtifact contributionArtifact = modelMapper.map(contributionArtifactCreatorDto, ContributionArtifact.class);
+
+            contributionStatusRepository.findById(contributionArtifactCreatorDto.getStatusArtifactId()).map(contributionStatus -> {
+                contributionArtifact.setContributionStatus(contributionStatus);
+
+                return contributionArtifact;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not found status with id"));
+
+            //convert entity to dto
+            ContributionArtifactCreatorDto _contributionArtifactCreatorDto = modelMapper.map(contributionArtifactRepository.save(contributionArtifact), ContributionArtifactCreatorDto.class);
+
+            return new ResponseEntity<>(_contributionArtifactCreatorDto, HttpStatus.CREATED);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ContributionArtifact> updateArtifactById(Long artifactId, ContributionArtifact contributionArtifact) {
+        try{
+            //check artifact id co ton tai khong
+            ContributionArtifact artifact = contributionArtifactRepository.findById(artifactId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found artifact id"));
+
+            artifact.setId(contributionArtifact.getId());
+            artifact.setArtifactName(contributionArtifact.getArtifactName());
+            artifact.setDonatedAmount(contributionArtifact.getDonatedAmount());
+            artifact.setReceivedAmount(contributionArtifact.getReceivedAmount());
+            artifact.setCalculationUnit(contributionArtifact.getCalculationUnit());
+            contributionStatusRepository.findById(contributionArtifact.getContributionStatus().getId()).map(contributionStatus -> {
+                artifact.setContributionStatus(contributionStatus);
+
+                return contributionArtifactRepository.save(artifact);
+            }).orElseThrow(() -> new ResourceNotFoundException("Not found status with id"));
+
+            return new ResponseEntity<>(artifact, HttpStatus.CREATED);
+        } catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

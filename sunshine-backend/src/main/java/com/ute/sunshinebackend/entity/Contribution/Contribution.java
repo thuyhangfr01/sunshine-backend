@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @Entity
 @Table(name = "contributions")
 public class Contribution {
@@ -42,24 +41,88 @@ public class Contribution {
     @Fetch(FetchMode.JOIN)
     private Project project;
 
-    @OneToOne(mappedBy = "contribution", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_contribution_money", referencedColumnName = "id")
     private ContributionMoney contributionMoney;
 
     @OneToMany(targetEntity = ContributionArtifact.class, mappedBy = "contribution", orphanRemoval = false, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(value=FetchMode.SELECT)
     private List<ContributionArtifact> contributionArtifacts;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
 
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt = Timestamp.valueOf(LocalDateTime.now());
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getMessages() {
+        return messages;
+    }
+
+    public void setMessages(String messages) {
+        this.messages = messages;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public ContributionMoney getContributionMoney() {
+        return contributionMoney;
+    }
 
     public void setContributionMoney(ContributionMoney contributionMoney) {
         this.contributionMoney = contributionMoney;
-        this.contributionMoney.setContribution(this);
     }
+
+    public List<ContributionArtifact> getContributionArtifacts() {
+        return contributionArtifacts;
+    }
+
+    public void setContributionArtifacts(List<ContributionArtifact> contributionArtifacts) {
+        this.contributionArtifacts = contributionArtifacts;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+    //    public void setContributionMoney(ContributionMoney contributionMoney) {
+//        this.contributionMoney = contributionMoney;
+//        this.contributionMoney.setContribution(this);
+//    }
+
+//    public void addArtifact(List<ContributionArtifact> contributionArtifacts){
+//        this.contributionArtifacts = contributionArtifacts;
+//        contributionArtifacts.forEach(contributionArtifact -> contributionArtifact.setContribution(this));
+//    }
 }
