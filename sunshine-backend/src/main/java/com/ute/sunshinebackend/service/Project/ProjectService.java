@@ -2,6 +2,7 @@ package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectListDto;
+import com.ute.sunshinebackend.dto.ProjectNameDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.*;
 
 public interface ProjectService {
+    public ResponseEntity<List<ProjectNameDto>> getListProjectName();
     public ResponseEntity<Project> getProjectById(Long id);
     public ResponseEntity<Map<String, Object>> getAll(String name, int page, int size);
     public ResponseEntity<List<Project>> getAllProjects();

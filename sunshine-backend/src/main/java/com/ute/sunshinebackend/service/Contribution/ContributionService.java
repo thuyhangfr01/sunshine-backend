@@ -4,6 +4,8 @@ import com.ute.sunshinebackend.dto.ContributionCreatorDto;
 import com.ute.sunshinebackend.dto.ContributionDto;
 import com.ute.sunshinebackend.dto.ContributionMoneyUpdateDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -11,6 +13,9 @@ import java.util.*;
 public interface ContributionService {
     //get all
     public ResponseEntity<List<ContributionDto>> getAllContributions();
+
+    //get all latest contributions
+    public ResponseEntity<List<ContributionDto>> getAllLatestContributions();
 
     //get contribution by id
     public ResponseEntity<ContributionDto> getContributionById(Long contributionId);

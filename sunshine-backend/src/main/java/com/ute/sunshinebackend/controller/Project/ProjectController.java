@@ -2,6 +2,7 @@ package com.ute.sunshinebackend.controller.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectListDto;
+import com.ute.sunshinebackend.dto.ProjectNameDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import com.ute.sunshinebackend.service.Project.ProjectService;
@@ -19,6 +20,11 @@ import java.util.*;
 public class ProjectController {
     @Autowired
     ProjectService projectService;
+
+    @GetMapping("/listProjectName")
+    public ResponseEntity<List<ProjectNameDto>> getListProjectName(){
+        return projectService.getListProjectName();
+    }
 
     @GetMapping("/project/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable("id") Long id){

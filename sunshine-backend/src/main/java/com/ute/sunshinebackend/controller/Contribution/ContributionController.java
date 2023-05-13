@@ -23,6 +23,11 @@ public class ContributionController {
         return contributionService.getAllContributions();
     }
 
+    @GetMapping("/latestContributions")
+    private ResponseEntity<List<ContributionDto>> getAllLatestContributions(){
+        return contributionService.getAllLatestContributions();
+    }
+
     @GetMapping("/contribution/{id}")
     private ResponseEntity<ContributionDto> getContributionById(@PathVariable("id") Long contributionId){
         return contributionService.getContributionById(contributionId);

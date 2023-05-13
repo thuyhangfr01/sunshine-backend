@@ -4,6 +4,8 @@ import com.ute.sunshinebackend.dto.ContributionArtifactCreatorDto;
 import com.ute.sunshinebackend.dto.ContributionArtifactDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
+
 import java.util.*;
 
 public interface ContributionArtifactService {
@@ -15,4 +17,7 @@ public interface ContributionArtifactService {
 
     //update artifact by id
     public ResponseEntity<ContributionArtifact> updateArtifactById(Long artifactId, ContributionArtifact contributionArtifact);
+
+    //delete artifact by id
+    public ResponseEntity<Boolean> deleteArtifactById(Long artifactId);
 }

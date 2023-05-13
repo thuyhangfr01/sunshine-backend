@@ -104,4 +104,14 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
         }
     }
 
+    @Override
+    public ResponseEntity<Boolean> deleteArtifactById(Long artifactId) {
+        try{
+            contributionArtifactRepository.deleteById(artifactId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
