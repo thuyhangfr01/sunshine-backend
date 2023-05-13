@@ -11,6 +11,8 @@ import java.util.*;
 public interface ContributionRepository extends JpaRepository<Contribution, Long> {
     boolean existsById(Long contributionId);
 
+    List<Contribution> findByOrderByCreatedAtDesc();
+
     @Query(value = "SELECT c.* FROM contributions c, users u WHERE c.id_user = u.id and c.id_user = :idUser", nativeQuery = true)
     List<Contribution> findByUserId(Long idUser);
 

@@ -1,6 +1,7 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectNameDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectMoney;
 import com.ute.sunshinebackend.entity.Project.ProjectType;
@@ -37,6 +38,22 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Override
+    public ResponseEntity<List<ProjectNameDto>> getListProjectName() {
+        List<Project> project = projectRepository.findAll();
+        List<ProjectNameDto> projectNameDto = new ArrayList<ProjectNameDto>();
+
+        for(int i = 0; i < project.size(); i++){
+            ProjectNameDto proNameDto = new ProjectNameDto(
+                    project.get(i).getId(),
+                    project.get(i).getName()
+            );
+
+            projectNameDto.add(proNameDto);
+        }
+        return new ResponseEntity<>(projectNameDto, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Project> getProjectById(Long projectId) {

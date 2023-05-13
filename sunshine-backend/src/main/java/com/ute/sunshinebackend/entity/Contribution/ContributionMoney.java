@@ -16,14 +16,16 @@ public class ContributionMoney {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount_money")
+    @Column(name = "amount_money", columnDefinition = "INT DEFAULT 0")
     private Long amountMoney;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_status", referencedColumnName = "id")
+    @JoinColumn(name = "id_status", referencedColumnName = "id", columnDefinition = "INT DEFAUT 1")
     private ContributionStatus mcontributionStatus;
 
-//    @OneToOne(mappedBy = "contributionMoney")
+//    @OneToOne
+//    @MapsId
+//    @JoinColumn(name = "id_contribution")
 //    private Contribution contribution;
 
     public ContributionMoney() {

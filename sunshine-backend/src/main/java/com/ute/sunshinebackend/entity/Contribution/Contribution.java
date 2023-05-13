@@ -45,6 +45,10 @@ public class Contribution {
     @JoinColumn(name = "id_contribution_money", referencedColumnName = "id")
     private ContributionMoney contributionMoney;
 
+//    @OneToOne(mappedBy = "contribution", cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    private ContributionMoney contributionMoney;
+
     @OneToMany(targetEntity = ContributionArtifact.class, mappedBy = "contribution", orphanRemoval = false, fetch = FetchType.LAZY)
     @Fetch(value=FetchMode.SELECT)
     private List<ContributionArtifact> contributionArtifacts;
