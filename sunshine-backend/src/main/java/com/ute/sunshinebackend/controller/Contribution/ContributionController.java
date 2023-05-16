@@ -48,9 +48,9 @@ public class ContributionController {
         return contributionService.addContribution(contributionCreatorDto);
     }
 
-    @PutMapping("/contribution/{id}/amountMoney")
-    private ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(@PathVariable("id") Long contributionId, ContributionMoneyUpdateDto contributionMoneyUpdateDto){
-        return contributionService.updateMoneyById(contributionId, contributionMoneyUpdateDto);
+    @PutMapping("/contribution/amountMoney/{mId}")
+    private ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(@PathVariable("mId") Long mId, @RequestBody ContributionMoneyUpdateDto contributionMoneyUpdateDto){
+        return contributionService.updateMoneyById(mId, contributionMoneyUpdateDto);
     }
 
     @PutMapping("/contribution/money/{id}/status") //duyet don
