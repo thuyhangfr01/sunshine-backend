@@ -30,7 +30,7 @@ public interface ContributionService {
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto);
 
     //update amount money
-    public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long contributionId, ContributionMoneyUpdateDto contributionMoneyUpdateDto);
+    public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long id, ContributionMoneyUpdateDto contributionMoneyUpdateDto);
 
     //update status
     public ResponseEntity<ContributionStatus> updateStatusMoney(Long contributionMoneyId, ContributionStatus ContributionStatus);

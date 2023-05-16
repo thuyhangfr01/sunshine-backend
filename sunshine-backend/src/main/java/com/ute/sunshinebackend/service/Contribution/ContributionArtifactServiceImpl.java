@@ -49,6 +49,7 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
                     contributionArtifactDto.setReceivedAmount(contributionArtifactList.get(i).getReceivedAmount());
                     contributionArtifactDto.setCalculationUnit(contributionArtifactList.get(i).getCalculationUnit());
                     contributionArtifactDto.setArtifactStatus(contributionArtifactList.get(i).getContributionStatus().getName());
+                    contributionArtifactDto.setContributionId(contributionId);
                     contributionArtifactListDto.add(contributionArtifactDto);
                 }
             }
@@ -60,24 +61,31 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
 
     @Override
     public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(Long contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto) {
-        try{
+//        try{
             //convert dto to entity
             modelMapper.getConfiguration().setAmbiguityIgnored(true);
             ContributionArtifact contributionArtifact = modelMapper.map(contributionArtifactCreatorDto, ContributionArtifact.class);
 
+            Contribution contribution = contributionRepository.findById(contributionId)
+                            .orElseThrow(() -> new ResourceNotFoundException("Not found contribution"));
             contributionStatusRepository.findById(contributionArtifactCreatorDto.getStatusArtifactId()).map(contributionStatus -> {
                 contributionArtifact.setContributionStatus(contributionStatus);
 
                 return contributionArtifact;
             }).orElseThrow(() -> new ResourceNotFoundException("Not found status with id"));
 
+            contributionArtifact.setArtifactName(contributionArtifactCreatorDto.getArtifactName());
+            contributionArtifact.setDonatedAmount(contributionArtifactCreatorDto.getDonatedAmount());
+            contributionArtifact.setCalculationUnit(contributionArtifactCreatorDto.getCalculationUnit());
+            contributionArtifact.setContribution(contribution);
+
             //convert entity to dto
             ContributionArtifactCreatorDto _contributionArtifactCreatorDto = modelMapper.map(contributionArtifactRepository.save(contributionArtifact), ContributionArtifactCreatorDto.class);
 
             return new ResponseEntity<>(_contributionArtifactCreatorDto, HttpStatus.CREATED);
-        } catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch(Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Override

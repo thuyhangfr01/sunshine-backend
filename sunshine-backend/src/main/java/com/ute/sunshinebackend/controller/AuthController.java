@@ -105,6 +105,12 @@ public class AuthController {
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role beneRole = roleRepository.findByName(ERole.ROLE_BENEFACTOR)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(beneRole);
+        } else {
         strRoles.forEach(role -> {
             switch (role) {
                 case "admin":
@@ -119,20 +125,21 @@ public class AuthController {
                     roles.add(collaRole);
 
                     break;
-                case "benefactor":
+                default:
                     Role beneRole = roleRepository.findByName(ERole.ROLE_BENEFACTOR)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(beneRole);
 
                     break;
-                case "recipient":
-                    Role recipRole = roleRepository.findByName(ERole.ROLE_RECIPIENT)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(recipRole);
-
-                    break;
+//                case "recipient":
+//                    Role recipRole = roleRepository.findByName(ERole.ROLE_RECIPIENT)
+//                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                    roles.add(recipRole);
+//
+//                    break;
             }
         });
+    }
 
         user.setRoles(roles);
         userRepository.save(user);
@@ -176,11 +183,11 @@ public class AuthController {
     }
 
 
-    @GetMapping("/recipient")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR') or hasRole('RECIPIENT')")
-    public String recipAccess() {
-        return "Recipient Board.";
-    }
+//    @GetMapping("/recipient")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR') or hasRole('RECIPIENT')")
+//    public String recipAccess() {
+//        return "Recipient Board.";
+//    }
 
     @GetMapping("/benefactor")
     @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR') or hasRole('BENEFACTOR')")

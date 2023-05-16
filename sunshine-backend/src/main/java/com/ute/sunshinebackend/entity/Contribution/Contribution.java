@@ -1,5 +1,6 @@
 package com.ute.sunshinebackend.entity.Contribution;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
 import com.ute.sunshinebackend.entity.User;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "contributions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Contribution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -207,12 +207,12 @@ public class ContributionServiceImpl implements ContributionService {
 
     @Override
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto) {
-        try {
+//        try {
             //money
             ContributionMoney contributionMoneyEntity = new ContributionMoney();
-            contributionMoneyEntity.setAmountMoney(contributionCreatorDto.getContributionMoney().getAmountMoney());
+            contributionMoneyEntity.setAmountMoney(contributionCreatorDto.getAmountMoney());
             contributionMoneyEntity.setMcontributionStatus(contributionStatusRepository.findById(
-                    contributionCreatorDto.getContributionMoney().getMcontributionStatus().getId())
+                    contributionCreatorDto.getStatusMoneyId())
                     .orElseThrow(() -> new ResourceNotFoundException("Status not found")));
             contributionMoneyEntity = contributionMoneyRepository.save(contributionMoneyEntity);
 
@@ -232,32 +232,34 @@ public class ContributionServiceImpl implements ContributionService {
             contributionEntity.setUser(user.get());
             contributionEntity.setProject(project.get());
 
+            contributionCreatorDto.setProjectName(project.get().getName());
             //convert entity to dto
             ContributionCreatorDto contributionDto = modelMapper.map(contributionRepository.save(contributionEntity), ContributionCreatorDto.class);
 
             return new ResponseEntity<>(contributionDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Override
-    public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long contributionId, ContributionMoneyUpdateDto contributionMoneyUpdateDto) {
+    public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long id, ContributionMoneyUpdateDto contributionMoneyUpdateDto) {
         //convert dto to entity
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         ContributionMoney contributionMoneyRequest = modelMapper.map(contributionMoneyUpdateDto, ContributionMoney.class);
 
         //check xem co ton tai contirbutionId khong
-        Contribution contribution = contributionRepository.findById(contributionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Contribution id " + contributionId + "not found"));
+//        Contribution contribution = contributionRepository.findById(contributionId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Contribution id " + contributionId + "not found"));
+//        contributionMoneyUpdateDto.setContributionId(contributionId);
 
-        //check xem co ton tai id cua contributionMoney tu contribution moi check duoc
-        ContributionMoney contributionMoney = contributionMoneyRepository.findById(contribution.getContributionMoney().getId())
+        //check xem co ton tai id cua contributionMoney khong
+        ContributionMoney contributionMoney = contributionMoneyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contribution money id not found"));
+        contributionMoneyUpdateDto.setMoneyId(id);
 
         //cap nhat so tien
         contributionMoney.setAmountMoney(contributionMoneyRequest.getAmountMoney());
-        contribution.setContributionMoney(contributionMoney);
 
         //convert entity to dto
         ContributionMoneyUpdateDto _contributionMoneyUpdateDto = modelMapper.map(contributionMoneyRepository.save(contributionMoney), ContributionMoneyUpdateDto.class);
@@ -283,12 +285,12 @@ public class ContributionServiceImpl implements ContributionService {
 
     @Override
     public ResponseEntity<Boolean> deleteContribution(Long contributionId) {
-        try {
+//        try {
             contributionRepository.deleteById(contributionId);
             return new ResponseEntity<>(null, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
     }
 }
 

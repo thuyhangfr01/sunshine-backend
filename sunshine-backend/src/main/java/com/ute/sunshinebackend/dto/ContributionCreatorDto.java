@@ -16,18 +16,25 @@ public class ContributionCreatorDto {
     private Long userId;
     private Long projectId;
     private String nickname;
+    private String projectName = "";
     private String messages;
 
     private ContributionMoney contributionMoney;
 
+    private long amountMoney;
+    private long statusMoneyId = 1;
+
     public ContributionCreatorDto() {}
 
-    public ContributionCreatorDto(Long id, Long userId, Long projectId, String nickname, String messages, ContributionMoney contributionMoney) {
+    public ContributionCreatorDto(Long id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, long amountMoney, long statusMoneyId) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
         this.nickname = nickname;
+        this.projectName = projectName;
         this.messages = messages;
         this.contributionMoney = contributionMoney;
+        this.amountMoney = amountMoney;
+        this.statusMoneyId = statusMoneyId;
     }
 }
