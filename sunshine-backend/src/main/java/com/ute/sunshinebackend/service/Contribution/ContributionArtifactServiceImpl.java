@@ -34,7 +34,7 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
     ContributionStatusRepository contributionStatusRepository;
 
     @Override
-    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(Long contributionId) {
+    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(String contributionId) {
         try{
             List<ContributionArtifactDto> contributionArtifactListDto = new ArrayList<ContributionArtifactDto>();
             //check xem co ton tai contributionId khong?
@@ -60,7 +60,7 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
     }
 
     @Override
-    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(Long contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto) {
+    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(String contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto) {
 //        try{
             //convert dto to entity
             modelMapper.getConfiguration().setAmbiguityIgnored(true);

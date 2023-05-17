@@ -3,6 +3,7 @@ package com.ute.sunshinebackend.service.Contribution;
 import com.ute.sunshinebackend.dto.ContributionCreatorDto;
 import com.ute.sunshinebackend.dto.ContributionDto;
 import com.ute.sunshinebackend.dto.ContributionMoneyUpdateDto;
+import com.ute.sunshinebackend.dto.StatusMoneyDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface ContributionService {
     public ResponseEntity<List<ContributionDto>> getAllLatestContributions();
 
     //get contribution by id
-    public ResponseEntity<ContributionDto> getContributionById(Long contributionId);
+    public ResponseEntity<ContributionDto> getContributionById(String contributionId);
 
     //get all contributions by user id
     public ResponseEntity<List<ContributionDto>> getAllContributionByUserId(Long userId);
@@ -33,8 +34,8 @@ public interface ContributionService {
     public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long id, ContributionMoneyUpdateDto contributionMoneyUpdateDto);
 
     //update status
-    public ResponseEntity<ContributionStatus> updateStatusMoney(Long contributionMoneyId, ContributionStatus ContributionStatus);
+    public ResponseEntity<StatusMoneyDto> updateStatusMoney(Long contributionMoneyId, StatusMoneyDto statusMoneyDto);
 
     //delete contribution
-    public ResponseEntity<Boolean> deleteContribution(Long contributionId);
+    public ResponseEntity<Boolean> deleteContribution(String contributionId);
 }

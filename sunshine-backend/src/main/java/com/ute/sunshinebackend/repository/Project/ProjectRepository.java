@@ -25,15 +25,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByOrderByCreatedAtDesc();
     @Transactional
     void deleteById(Long id);
-//    @Query("SELECT new com.ute.sunshinebackend.dto.ProjectListDto(a.id, a.name, a.details, b.name, a.numVolunteers, c.name, a.position, a.startTime, a.endTime, a.holdTime) "
-//            + " FROM Project a JOIN a.projectType b JOIN a.projectStatus c WHERE b.id = :idType")
-//    List<ProjectListDto> findByProjectTypeId(Long idType);
 
-//    @Query("SELECT new com.ute.sunshinebackend.dto.ProjectListDto(a.id, a.name, a.details, b.name, a.numVolunteers, c.name, a.position, a.startTime, a.endTime, a.holdTime) "
-//            + " FROM Project a JOIN a.projectType b JOIN a.projectStatus c WHERE a.id = :id ")
-//    Optional<ProjectListDto> getProjectById(Long id);
-
-//    @Query(value = "SELECT new com.ute.sunshinebackend.dto.ProjectListDto(a.id, a.name, a.details, b.name, a.numVolunteers, c.name, a.position, a.startTime, a.endTime, a.holdTime) "
-//            + "FROM Project a JOIN a.projectType b JOIN a.projectStatus c ORDER BY a.createdAt DESC")
-//    Page<ProjectListDto> findTop5LatestProjects(Pageable pageable);
+    //tong tien dong gop cua tung du an
+    @Query(value = "select sum(amount_money) " +
+            "from contributions as a, contribution_money as b, projects as c " +
+            "where a.id_contribution_money = b.id and a.id_project = c.id and b.id_status = 3 and c.id = :projectId " +
+            "group by c.id", nativeQuery = true)
+    Long getTotalMoneyByProjectId(long projectId);
 }

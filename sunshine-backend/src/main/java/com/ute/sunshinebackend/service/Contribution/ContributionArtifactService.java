@@ -10,10 +10,10 @@ import java.util.*;
 
 public interface ContributionArtifactService {
     //get all artifacts by contribution id
-    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(Long contributionId);
+    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(String contributionId);
 
     //create new actifact by contribution id
-    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(Long contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto);
+    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(String contributionId, ContributionArtifactCreatorDto contributionArtifactCreatorDto);
 
     //update artifact by id
     public ResponseEntity<ContributionArtifact> updateArtifactById(Long artifactId, ContributionArtifact contributionArtifact);

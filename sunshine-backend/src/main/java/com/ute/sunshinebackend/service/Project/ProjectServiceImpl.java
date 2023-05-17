@@ -2,6 +2,7 @@ package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectMoney;
 import com.ute.sunshinebackend.entity.Project.ProjectType;
@@ -242,5 +243,20 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<Boolean> deleteProject(Long id) {
         projectRepository.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<TotalMoneyDto> getTotalMoneyByProjectId(Long projectId) {
+            TotalMoneyDto totalMoneyDto = new TotalMoneyDto();
+            Project project = projectRepository.findById(projectId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Project id " + projectId + "not found"));
+
+         if (projectRepository.getTotalMoneyByProjectId(project.getId()) == null){
+            totalMoneyDto.setTotalMoney(0);
+        } else {
+            totalMoneyDto.setTotalMoney(projectRepository.getTotalMoneyByProjectId(project.getId()));
+        }
+        return new ResponseEntity<>(totalMoneyDto, HttpStatus.OK);
+
     }
 }

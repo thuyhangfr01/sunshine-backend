@@ -18,12 +18,12 @@ public class ContributionArtifactController {
     ContributionArtifactService contributionArtifactService;
 
     @GetMapping("/contribution/{id}/artifacts")
-    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(@PathVariable("id") Long contributionId){
+    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(@PathVariable("id") String contributionId){
         return contributionArtifactService.getArtifactsByContributionId(contributionId);
     }
 
     @PostMapping("/contribution/{id}/artifacts")
-    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(@PathVariable("id") Long contributionId, @RequestBody ContributionArtifactCreatorDto contributionArtifactCreatorDto){
+    public ResponseEntity<ContributionArtifactCreatorDto> addNewArtifactByContributionId(@PathVariable("id") String contributionId, @RequestBody ContributionArtifactCreatorDto contributionArtifactCreatorDto){
         return contributionArtifactService.addNewArtifactByContributionId(contributionId, contributionArtifactCreatorDto);
     }
 
