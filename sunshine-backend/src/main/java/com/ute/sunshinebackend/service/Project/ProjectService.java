@@ -3,6 +3,7 @@ package com.ute.sunshinebackend.service.Project;
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectListDto;
 import com.ute.sunshinebackend.dto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public interface ProjectService {
     public ResponseEntity<ProjectCreatorDto> addProject(ProjectCreatorDto projectCreatorDtoRequest);
     public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto);
     public ResponseEntity<Boolean> deleteProject(Long id);
+    public ResponseEntity<TotalMoneyDto> getTotalMoneyByProjectId(Long projectId);
 
 //    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable);
 }

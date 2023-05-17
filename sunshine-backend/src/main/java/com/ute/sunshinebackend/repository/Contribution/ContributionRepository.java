@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public interface ContributionRepository extends JpaRepository<Contribution, Long> {
+public interface ContributionRepository extends JpaRepository<Contribution, String> {
     boolean existsById(Long contributionId);
 
     List<Contribution> findByOrderByCreatedAtDesc();
@@ -18,5 +18,8 @@ public interface ContributionRepository extends JpaRepository<Contribution, Long
 
     @Query(value = "SELECT c.* FROM contributions c, projects p WHERE c.id_project = p.id and c.id_project = :idProject", nativeQuery = true)
     List<Contribution> findByProjectId(Long idProject);
+
+    @Query(nativeQuery = true, value = "SELECT DBO.AUTO_IDC()")
+    String geneId();
 
 }

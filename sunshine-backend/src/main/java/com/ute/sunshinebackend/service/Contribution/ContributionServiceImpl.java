@@ -2,6 +2,7 @@ package com.ute.sunshinebackend.service.Contribution;
 
 import com.ute.sunshinebackend.dto.*;
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
+import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
 import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
 import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
 import com.ute.sunshinebackend.entity.Project.Project;
@@ -21,6 +22,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +114,7 @@ public class ContributionServiceImpl implements ContributionService {
     }
 
     @Override
-    public ResponseEntity<ContributionDto> getContributionById(Long contributionId) {
+    public ResponseEntity<ContributionDto> getContributionById(String contributionId) {
         Boolean checkId = contributionRepository.existsById(contributionId);
         ContributionDto contributionDto = new ContributionDto();
 
@@ -207,6 +211,7 @@ public class ContributionServiceImpl implements ContributionService {
 
     @Override
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto) {
+
 //        try {
             //money
             ContributionMoney contributionMoneyEntity = new ContributionMoney();
@@ -220,7 +225,26 @@ public class ContributionServiceImpl implements ContributionService {
             modelMapper.getConfiguration().setAmbiguityIgnored(true);
             Contribution contributionEntity = modelMapper.map(contributionCreatorDto, Contribution.class);
 
-            //user
+            //artifacts
+            List<ContributionArtifact> artifactsNew = new ArrayList<ContributionArtifact>();
+            List<ContributionArtifact> artifactCreator = contributionCreatorDto.getContributionArtifacts();
+            if(artifactCreator != null){
+                for(int i = 0; i < artifactCreator.size(); i++){
+                    ContributionArtifact item = new ContributionArtifact();
+                    item.setArtifactName(artifactCreator.get(i).getArtifactName());
+                    item.setDonatedAmount(artifactCreator.get(i).getDonatedAmount());
+                    item.setReceivedAmount(0L);
+                    item.setCalculationUnit(artifactCreator.get(i).getCalculationUnit());
+                    item.setContributionStatus(contributionStatusRepository.findById(
+                                    contributionCreatorDto.getStatueArtifactId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Status not found")));
+
+                    artifactsNew.add(item);
+                }
+                contributionEntity.addArtifact(artifactsNew);
+            }
+
+        //user
             Optional<User> user = userRepository.findById(contributionCreatorDto.getUserId());
 
             //project
@@ -269,22 +293,25 @@ public class ContributionServiceImpl implements ContributionService {
     }
 
     @Override
-    public ResponseEntity<ContributionStatus> updateStatusMoney(Long contributionMoneyId, ContributionStatus contributionStatus) {
+    public ResponseEntity<StatusMoneyDto> updateStatusMoney(Long contributionMoneyId, StatusMoneyDto statusMoneyDto) {
         //check co ton tai contribution money id hay khong
         ContributionMoney contributionMoney = contributionMoneyRepository.findById(contributionMoneyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contribution money id not found"));
 
-        contributionStatusRepository.findById(contributionStatus.getId()).map(status -> {
-            contributionMoney.setMcontributionStatus(status);
+        contributionStatusRepository.findById(statusMoneyDto.getStatusId()).map(contributionStatus1 -> {
+            contributionMoney.setMcontributionStatus(contributionStatus1);
 
             return contributionMoneyRepository.save(contributionMoney);
         }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-        return new ResponseEntity<>(contributionMoney.getMcontributionStatus(), HttpStatus.OK);
+        statusMoneyDto.setMoneyId(contributionMoneyId);
+        statusMoneyDto.setContributionStatus(contributionMoney.getMcontributionStatus());
+
+        return new ResponseEntity<>(statusMoneyDto, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> deleteContribution(Long contributionId) {
+    public ResponseEntity<Boolean> deleteContribution(String contributionId) {
 //        try {
             contributionRepository.deleteById(contributionId);
             return new ResponseEntity<>(null, HttpStatus.OK);

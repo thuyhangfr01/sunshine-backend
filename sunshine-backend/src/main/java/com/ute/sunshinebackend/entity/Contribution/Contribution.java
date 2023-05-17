@@ -5,12 +5,13 @@ import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
 import com.ute.sunshinebackend.entity.User;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,9 +22,11 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Contribution {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue(generator = "my_generator")
+    @GenericGenerator(name = "my_generator",
+            strategy = "com.ute.sunshinebackend.generator.MyGenerator")
+    @Column(name="id")
+    private String id;
 
     @Column(name = "nickname")
     private String nickname;
@@ -53,17 +56,18 @@ public class Contribution {
 
     @OneToMany(targetEntity = ContributionArtifact.class, mappedBy = "contribution", orphanRemoval = false, fetch = FetchType.LAZY)
     @Fetch(value=FetchMode.SELECT)
+    @Cascade(CascadeType.ALL)
     private List<ContributionArtifact> contributionArtifacts;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -127,8 +131,8 @@ public class Contribution {
 //        this.contributionMoney.setContribution(this);
 //    }
 
-//    public void addArtifact(List<ContributionArtifact> contributionArtifacts){
-//        this.contributionArtifacts = contributionArtifacts;
-//        contributionArtifacts.forEach(contributionArtifact -> contributionArtifact.setContribution(this));
-//    }
+    public void addArtifact(List<ContributionArtifact> contributionArtifacts){
+        this.contributionArtifacts = contributionArtifacts;
+        contributionArtifacts.forEach(contributionArtifact -> contributionArtifact.setContribution(this));
+    }
 }

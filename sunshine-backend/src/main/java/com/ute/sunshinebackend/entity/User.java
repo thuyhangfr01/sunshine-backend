@@ -41,9 +41,6 @@ public class User{
     @Column(name = "street")
     private String street;
 
-    @Column(name = "enabled")
-    private boolean enabled = true;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "roles_users",

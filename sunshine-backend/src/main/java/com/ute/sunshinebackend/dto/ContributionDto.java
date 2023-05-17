@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class ContributionDto {
-    private Long id;
+    private String id;
     private String nickname;
     private String messages;
     private String userName;
@@ -20,7 +20,7 @@ public class ContributionDto {
     public ContributionDto() {
     }
 
-    public ContributionDto(Long id, String nickname, String messages, String userName, String userEmail, String userPhone, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto) {
+    public ContributionDto(String id, String nickname, String messages, String userName, String userEmail, String userPhone, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto) {
         this.id = id;
         this.nickname = nickname;
         this.messages = messages;
@@ -34,7 +34,7 @@ public class ContributionDto {
         this.contributionArtifactDto = contributionArtifactDto;
     }
 
-    public ContributionDto(Long id, String nickname, String messages, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto) {
+    public ContributionDto(String id, String nickname, String messages, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto) {
         this.id = id;
         this.nickname = nickname;
         this.messages = messages;

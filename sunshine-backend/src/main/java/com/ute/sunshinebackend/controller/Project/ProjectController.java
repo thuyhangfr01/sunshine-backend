@@ -3,6 +3,7 @@ package com.ute.sunshinebackend.controller.Project;
 import com.ute.sunshinebackend.dto.ProjectCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectListDto;
 import com.ute.sunshinebackend.dto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import com.ute.sunshinebackend.service.Project.ProjectService;
@@ -88,5 +89,10 @@ public class ProjectController {
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('COLLABORATOR')")
     public ResponseEntity<Boolean> deleteProject(@PathVariable("id") Long id){
         return projectService.deleteProject(id);
+    }
+
+    @GetMapping("/project/{id}/totalMoney")
+    public ResponseEntity<TotalMoneyDto> getTotalMoneyByProjectId(@PathVariable("id") Long projectId){
+        return projectService.getTotalMoneyByProjectId(projectId);
     }
 }

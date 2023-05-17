@@ -3,6 +3,7 @@ package com.ute.sunshinebackend.controller.Contribution;
 import com.ute.sunshinebackend.dto.ContributionCreatorDto;
 import com.ute.sunshinebackend.dto.ContributionDto;
 import com.ute.sunshinebackend.dto.ContributionMoneyUpdateDto;
+import com.ute.sunshinebackend.dto.StatusMoneyDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
 import com.ute.sunshinebackend.service.Contribution.ContributionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ContributionController {
     }
 
     @GetMapping("/contribution/{id}")
-    private ResponseEntity<ContributionDto> getContributionById(@PathVariable("id") Long contributionId){
+    private ResponseEntity<ContributionDto> getContributionById(@PathVariable("id") String contributionId){
         return contributionService.getContributionById(contributionId);
     }
 
@@ -53,13 +54,13 @@ public class ContributionController {
         return contributionService.updateMoneyById(mId, contributionMoneyUpdateDto);
     }
 
-    @PutMapping("/contribution/money/{id}/status") //duyet don
-    private ResponseEntity<ContributionStatus> updateContributionMoneyStatus(@PathVariable("id") Long contributionMoneyId, @RequestBody ContributionStatus contributionStatus){
-        return contributionService.updateStatusMoney(contributionMoneyId, contributionStatus);
+    @PutMapping("/contribution/money/{moneyId}/status") //duyet don
+    private ResponseEntity<StatusMoneyDto> updateContributionMoneyStatus(@PathVariable("moneyId") Long contributionMoneyId, @RequestBody StatusMoneyDto statusMoneyDto){
+        return contributionService.updateStatusMoney(contributionMoneyId, statusMoneyDto);
     }
 
     @DeleteMapping("/contribution/{id}")
-    private ResponseEntity<Boolean> deleteContributionById(@PathVariable("id") Long contributionId){
+    private ResponseEntity<Boolean> deleteContributionById(@PathVariable("id") String contributionId){
         return contributionService.deleteContribution(contributionId);
     }
 }
