@@ -2,12 +2,9 @@ package com.ute.sunshinebackend.entity.Contribution;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ute.sunshinebackend.entity.Project.Project;
-import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
-import com.ute.sunshinebackend.entity.User;
-import lombok.Data;
+import com.ute.sunshinebackend.entity.User.User;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -63,8 +60,19 @@ public class Contribution {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
 
+    @Column(name = "payment_type")
+    private String paymentType;
+
     public String getId() {
         return id;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 
     public void setId(String id) {

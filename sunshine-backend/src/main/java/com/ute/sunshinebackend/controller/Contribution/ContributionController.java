@@ -1,10 +1,9 @@
 package com.ute.sunshinebackend.controller.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionDto;
-import com.ute.sunshinebackend.dto.ContributionMoneyUpdateDto;
-import com.ute.sunshinebackend.dto.StatusMoneyDto;
-import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionMoneyUpdateDto;
+import com.ute.sunshinebackend.dto.ContributionDto.StatusMoneyDto;
 import com.ute.sunshinebackend.service.Contribution.ContributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

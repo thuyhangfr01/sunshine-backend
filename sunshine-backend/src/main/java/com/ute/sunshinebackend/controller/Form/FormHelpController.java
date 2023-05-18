@@ -1,7 +1,7 @@
 package com.ute.sunshinebackend.controller.Form;
 
-import com.ute.sunshinebackend.dto.FormHelpCreatorDto;
-import com.ute.sunshinebackend.dto.FormHelpDto;
+import com.ute.sunshinebackend.dto.FormDto.FormHelpCreatorDto;
+import com.ute.sunshinebackend.dto.FormDto.FormHelpDto;
 import com.ute.sunshinebackend.entity.Form.FormStatus;
 import com.ute.sunshinebackend.service.Form.FormHelpService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,17 +1,14 @@
 package com.ute.sunshinebackend.repository.Project;
 
-import com.ute.sunshinebackend.dto.ProjectListDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
@@ -32,4 +29,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "where a.id_contribution_money = b.id and a.id_project = c.id and b.id_status = 3 and c.id = :projectId " +
             "group by c.id", nativeQuery = true)
     Long getTotalMoneyByProjectId(long projectId);
+
+
+
 }

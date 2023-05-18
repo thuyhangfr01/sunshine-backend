@@ -1,7 +1,7 @@
 package com.ute.sunshinebackend.security.service;
 
-import com.ute.sunshinebackend.entity.User;
-import com.ute.sunshinebackend.repository.UserRepository;
+import com.ute.sunshinebackend.entity.User.User;
+import com.ute.sunshinebackend.repository.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

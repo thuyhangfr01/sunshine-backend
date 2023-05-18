@@ -1,7 +1,6 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.entity.Project.ProjectImage;
-import com.ute.sunshinebackend.entity.User;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Project.ProjectImageRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
@@ -9,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service

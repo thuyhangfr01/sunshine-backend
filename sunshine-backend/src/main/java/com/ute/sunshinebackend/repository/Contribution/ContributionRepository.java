@@ -2,13 +2,14 @@ package com.ute.sunshinebackend.repository.Contribution;
 
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public interface ContributionRepository extends JpaRepository<Contribution, String> {
+public interface ContributionRepository extends JpaRepository<Contribution, String>, JpaSpecificationExecutor<Contribution> {
     boolean existsById(Long contributionId);
 
     List<Contribution> findByOrderByCreatedAtDesc();

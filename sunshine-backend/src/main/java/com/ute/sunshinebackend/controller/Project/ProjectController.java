@@ -1,17 +1,14 @@
 package com.ute.sunshinebackend.controller.Project;
 
-import com.ute.sunshinebackend.dto.ProjectCreatorDto;
-import com.ute.sunshinebackend.dto.ProjectListDto;
-import com.ute.sunshinebackend.dto.ProjectNameDto;
-import com.ute.sunshinebackend.dto.TotalMoneyDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
-import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import com.ute.sunshinebackend.service.Project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 

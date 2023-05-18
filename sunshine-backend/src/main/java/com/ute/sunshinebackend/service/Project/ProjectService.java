@@ -1,9 +1,8 @@
 package com.ute.sunshinebackend.service.Project;
 
-import com.ute.sunshinebackend.dto.ProjectCreatorDto;
-import com.ute.sunshinebackend.dto.ProjectListDto;
-import com.ute.sunshinebackend.dto.ProjectNameDto;
-import com.ute.sunshinebackend.dto.TotalMoneyDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,10 +1,9 @@
 package com.ute.sunshinebackend.service.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionArtifactCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionArtifactDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
