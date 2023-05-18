@@ -1,30 +1,24 @@
 package com.ute.sunshinebackend.service.Contribution;
 
-import com.ute.sunshinebackend.dto.*;
+import com.ute.sunshinebackend.dto.ContributionDto.*;
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
 import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
-import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
 import com.ute.sunshinebackend.entity.Project.Project;
-import com.ute.sunshinebackend.entity.User;
+import com.ute.sunshinebackend.entity.User.User;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Contribution.ContributionArtifactRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionMoneyRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionStatusRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
-import com.ute.sunshinebackend.repository.UserRepository;
+import com.ute.sunshinebackend.repository.User.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +31,6 @@ public class ContributionServiceImpl implements ContributionService {
     public ContributionRepository contributionRepository;
     @Autowired
     public ContributionMoneyRepository contributionMoneyRepository;
-    @Autowired
-    public ContributionArtifactRepository contributionArtifactRepository;
     @Autowired
     public ContributionArtifactService contributionArtifactService;
 
@@ -69,6 +61,8 @@ public class ContributionServiceImpl implements ContributionService {
                 contributionDto.setProjectType(list.get(i).getProject().getProjectType().getName());
                 contributionDto.setContributionMoney(list.get(i).getContributionMoney().getAmountMoney());
                 contributionDto.setMoneyStatus(list.get(i).getContributionMoney().getMcontributionStatus().getName());
+                contributionDto.setPaymentType(list.get(i).getPaymentType());
+                contributionDto.setCreatedAt(list.get(i).getCreatedAt());
 
                 List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
                 contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(list.get(i).getId()).getBody();
@@ -100,6 +94,8 @@ public class ContributionServiceImpl implements ContributionService {
                 contributionDto.setProjectType(list.get(i).getProject().getProjectType().getName());
                 contributionDto.setContributionMoney(list.get(i).getContributionMoney().getAmountMoney());
                 contributionDto.setMoneyStatus(list.get(i).getContributionMoney().getMcontributionStatus().getName());
+                contributionDto.setPaymentType(list.get(i).getPaymentType());
+                contributionDto.setCreatedAt(list.get(i).getCreatedAt());
 
                 List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
                 contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(list.get(i).getId()).getBody();
@@ -130,6 +126,8 @@ public class ContributionServiceImpl implements ContributionService {
             contributionDto.setProjectType(contribution.get().getProject().getProjectType().getName());
             contributionDto.setContributionMoney(contribution.get().getContributionMoney().getAmountMoney());
             contributionDto.setMoneyStatus(contribution.get().getContributionMoney().getMcontributionStatus().getName());
+            contributionDto.setPaymentType(contribution.get().getPaymentType());
+            contributionDto.setCreatedAt(contribution.get().getCreatedAt());
 
             List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
             contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(contribution.get().getId()).getBody();
@@ -160,6 +158,8 @@ public class ContributionServiceImpl implements ContributionService {
                 contributionDto.setProjectType(list.get(i).getProject().getProjectType().getName());
                 contributionDto.setContributionMoney(list.get(i).getContributionMoney().getAmountMoney());
                 contributionDto.setMoneyStatus(list.get(i).getContributionMoney().getMcontributionStatus().getName());
+                contributionDto.setPaymentType(list.get(i).getPaymentType());
+                contributionDto.setCreatedAt(list.get(i).getCreatedAt());
 
                 List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
                 contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(list.get(i).getId()).getBody();
@@ -194,6 +194,8 @@ public class ContributionServiceImpl implements ContributionService {
                 contributionDto.setProjectType(list.get(i).getProject().getProjectType().getName());
                 contributionDto.setContributionMoney(list.get(i).getContributionMoney().getAmountMoney());
                 contributionDto.setMoneyStatus(list.get(i).getContributionMoney().getMcontributionStatus().getName());
+                contributionDto.setPaymentType(list.get(i).getPaymentType());
+                contributionDto.setCreatedAt(list.get(i).getCreatedAt());
 
                 List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
                 contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(list.get(i).getId()).getBody();
@@ -255,6 +257,7 @@ public class ContributionServiceImpl implements ContributionService {
             contributionEntity.setContributionMoney(contributionMoneyEntity);
             contributionEntity.setUser(user.get());
             contributionEntity.setProject(project.get());
+            contributionEntity.setPaymentType(contributionCreatorDto.getPaymentType());
 
             contributionCreatorDto.setProjectName(project.get().getName());
             //convert entity to dto

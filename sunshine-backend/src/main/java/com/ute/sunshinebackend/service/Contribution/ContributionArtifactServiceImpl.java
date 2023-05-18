@@ -1,13 +1,9 @@
 package com.ute.sunshinebackend.service.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionArtifactCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionArtifactDto;
-import com.ute.sunshinebackend.dto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactDto;
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
-import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
-import com.ute.sunshinebackend.entity.Project.Project;
-import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Contribution.ContributionArtifactRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionRepository;

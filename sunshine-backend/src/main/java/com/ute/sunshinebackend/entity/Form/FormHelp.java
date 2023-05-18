@@ -1,8 +1,6 @@
 package com.ute.sunshinebackend.entity.Form;
 
-import com.ute.sunshinebackend.entity.Contribution.ContributionStatus;
-import com.ute.sunshinebackend.entity.Project.ProjectImage;
-import com.ute.sunshinebackend.entity.User;
+import com.ute.sunshinebackend.entity.User.User;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

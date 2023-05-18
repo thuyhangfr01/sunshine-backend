@@ -1,15 +1,14 @@
 package com.ute.sunshinebackend.security.service;
 
-import com.ute.sunshinebackend.entity.RefreshToken;
+import com.ute.sunshinebackend.entity.User.RefreshToken;
 import com.ute.sunshinebackend.exception.TokenRefreshException;
-import com.ute.sunshinebackend.repository.RefreshTokenRepository;
-import com.ute.sunshinebackend.repository.UserRepository;
+import com.ute.sunshinebackend.repository.User.RefreshTokenRepository;
+import com.ute.sunshinebackend.repository.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;

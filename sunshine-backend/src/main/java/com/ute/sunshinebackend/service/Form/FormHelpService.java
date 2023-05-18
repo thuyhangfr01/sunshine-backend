@@ -1,8 +1,7 @@
 package com.ute.sunshinebackend.service.Form;
 
-import com.ute.sunshinebackend.dto.FormHelpCreatorDto;
-import com.ute.sunshinebackend.dto.FormHelpDto;
-import com.ute.sunshinebackend.entity.Form.FormHelp;
+import com.ute.sunshinebackend.dto.FormDto.FormHelpCreatorDto;
+import com.ute.sunshinebackend.dto.FormDto.FormHelpDto;
 import com.ute.sunshinebackend.entity.Form.FormStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.*;

@@ -1,7 +1,7 @@
 package com.ute.sunshinebackend.controller.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionArtifactCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionArtifactDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactDto;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
 import com.ute.sunshinebackend.service.Contribution.ContributionArtifactService;
 import org.springframework.beans.factory.annotation.Autowired;

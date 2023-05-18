@@ -1,11 +1,9 @@
 package com.ute.sunshinebackend.service.Project;
 
-import com.ute.sunshinebackend.dto.ProjectCreatorDto;
-import com.ute.sunshinebackend.dto.ProjectNameDto;
-import com.ute.sunshinebackend.dto.TotalMoneyDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
+import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
-import com.ute.sunshinebackend.entity.Project.ProjectMoney;
-import com.ute.sunshinebackend.entity.Project.ProjectType;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Project.ProjectMoneyRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
@@ -20,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
