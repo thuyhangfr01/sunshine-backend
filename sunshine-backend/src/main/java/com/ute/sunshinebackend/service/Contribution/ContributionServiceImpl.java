@@ -258,8 +258,9 @@ public class ContributionServiceImpl implements ContributionService {
             contributionEntity.setUser(user.get());
             contributionEntity.setProject(project.get());
             contributionEntity.setPaymentType(contributionCreatorDto.getPaymentType());
-
+            contributionEntity.setCreatedAt(contributionCreatorDto.getCreatedAt());
             contributionCreatorDto.setProjectName(project.get().getName());
+
             //convert entity to dto
             ContributionCreatorDto contributionDto = modelMapper.map(contributionRepository.save(contributionEntity), ContributionCreatorDto.class);
 

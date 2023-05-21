@@ -79,6 +79,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
         projectPaymentEntity.setReason(projectPaymentCreatorDto.getReason());
         projectPaymentEntity.setUser(user.get());
         projectPaymentEntity.setProject(project.get());
+        projectPaymentEntity.setCreatedAt(projectPaymentCreatorDto.getCreatedAt());
+        projectPaymentCreatorDto.setUserName(user.get().getName());
 
         //convert entity to dto
         ProjectPaymentCreatorDto projectPaymentCreatorDto1 = modelMapper.map(projectPaymentRepository.save(projectPaymentEntity), ProjectPaymentCreatorDto.class);
@@ -108,9 +110,10 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
     }
 
     @Override
-    public ResponseEntity<List<UnionDto>> unionByProjectId(Integer projectId1, Integer projectId2) {
+    public ResponseEntity<List<UnionDto>> unionByProjectIdByDate(Integer projectId1, Integer projectId2, String fromDate1, String toDate1, String fromDate2, String toDate2) {
         List<UnionDto> unionDtos = new ArrayList<>();
-        if(projectId1 == 0 || projectId2 == 0) {
+        if((projectId1 == 0 || projectId2 == 0)
+                && (fromDate1.length() == 1|| toDate1.length() == 1 || fromDate2.length() == 1 || toDate2.length() == 1)) {
             List<Object []> resultUnion = projectPaymentRepository.union();
 
             for(Object[] row : resultUnion){
@@ -124,8 +127,40 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
 
                 unionDtos.add(unionDto);
             }
-        } else{
+        }
+        else if((projectId1 == 0 || projectId2 == 0) &&
+                (fromDate1.length() != 1 && toDate1.length() != 1 && fromDate2.length() != 1 && toDate2.length() != 1)){
+            List<Object []> resultUnion = projectPaymentRepository.unionByDate(fromDate1, toDate1, fromDate2, toDate2);
+
+            for(Object[] row : resultUnion){
+                UnionDto unionDto = new UnionDto();
+                unionDto.setId((String) row[0]);
+                unionDto.setAmountMoney((BigDecimal) row[1]);
+                unionDto.setUserName((String) row[2]);
+                unionDto.setType((String) row[3]);
+                unionDto.setCreatedAt((Date) row[4]);
+                unionDto.setProjectId((Integer) row[5]);
+
+                unionDtos.add(unionDto);
+            }
+        } else if((projectId1 != 0 && projectId2 != 0) &&
+                (fromDate1.length() == 1|| toDate1.length() == 1 || fromDate2.length() == 1 || toDate2.length() == 1)){
             List<Object []> resultUnion = projectPaymentRepository.unionByProjectId(projectId1, projectId2);
+
+            for(Object[] row : resultUnion){
+                UnionDto unionDto = new UnionDto();
+                unionDto.setId((String) row[0]);
+                unionDto.setAmountMoney((BigDecimal) row[1]);
+                unionDto.setUserName((String) row[2]);
+                unionDto.setType((String) row[3]);
+                unionDto.setCreatedAt((Date) row[4]);
+                unionDto.setProjectId((Integer) row[5]);
+
+                unionDtos.add(unionDto);
+            }
+        } else if((projectId1 != 0 && projectId2 != 0) &&
+                (fromDate1.length() != 1 && toDate1.length() != 1 && fromDate2.length() != 1 && toDate2.length() != 1)){
+            List<Object []> resultUnion = projectPaymentRepository.unionByDateByProjectId(projectId1, projectId2, fromDate1, toDate1, fromDate2, toDate2);
 
             for(Object[] row : resultUnion){
                 UnionDto unionDto = new UnionDto();
@@ -143,45 +178,23 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
     }
 
     @Override
-    public ResponseEntity<SumMoneyDto> sumMoneyByContribution(Integer projectId) {
-        SumMoneyDto sumMoneyDto = new SumMoneyDto();
-        if(projectId == 0){
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByContribution());
+    public ResponseEntity<List<UnionDto>> union() {
+        List<UnionDto> unionDtos = new ArrayList<>();
+        List<Object []> resultUnion = projectPaymentRepository.union();
+
+        for(Object[] row : resultUnion){
+            UnionDto unionDto = new UnionDto();
+            unionDto.setId((String) row[0]);
+            unionDto.setAmountMoney((BigDecimal) row[1]);
+            unionDto.setUserName((String) row[2]);
+            unionDto.setType((String) row[3]);
+            unionDto.setCreatedAt((Date) row[4]);
+            unionDto.setProjectId((Integer) row[5]);
+
+            unionDtos.add(unionDto);
         }
-        else{
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByContributionByProjectId(projectId));
-        }
-        return new ResponseEntity<>(sumMoneyDto, HttpStatus.OK);
+            return new ResponseEntity<>(unionDtos, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<SumMoneyDto> sumMoneyByContributionByDate(String fromDate, String toDate) {
-        SumMoneyDto sumMoneyDto = new SumMoneyDto();
-        if(fromDate != "" && toDate != ""){
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByContributionByDate(fromDate, toDate));
-        }
-        return new ResponseEntity<>(sumMoneyDto, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<SumMoneyDto> sumMoneyByPayment(Integer projectId) {
-        SumMoneyDto sumMoneyDto = new SumMoneyDto();
-        if(projectId == 0){
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByPayment());
-        }
-        else{
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByPaymentIdProject(projectId));
-        }
-        return new ResponseEntity<>(sumMoneyDto, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<SumMoneyDto> sumMoneyByPaymentByDate(String fromDate, String toDate) {
-        SumMoneyDto sumMoneyDto = new SumMoneyDto();
-        if(fromDate != "" && toDate != ""){
-            sumMoneyDto.setSumMoney(projectPaymentRepository.sumMoneyByPaymentByDate(fromDate, toDate));
-        }
-        return new ResponseEntity<>(sumMoneyDto, HttpStatus.OK);
-    }
 
 }
