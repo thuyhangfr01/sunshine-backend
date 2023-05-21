@@ -19,6 +19,11 @@ public class ProjectPaymentController {
     @Autowired
     ProjectPaymentService projectPaymentService;
 
+
+//    @GetMapping("/unionByProjectId")
+//    public ResponseEntity<List<UnionDto>> unionByDate(){
+//        return projectPaymentService.union();
+//    }
     @GetMapping("/unionByDate")
     public ResponseEntity<List<UnionDto>> unionByDate(@RequestParam(required = true) String fromDate1,
                                                       @RequestParam(required = true) String toDate1,
@@ -27,30 +32,14 @@ public class ProjectPaymentController {
         return projectPaymentService.unionByDate(fromDate1, toDate1, fromDate2, toDate2);
     }
 
-    @GetMapping("/unionByProjectId")
+    @GetMapping("/unionByProjectIdByDate")
     public ResponseEntity<List<UnionDto>> unionByProjectId(@RequestParam(required = false) Integer projectId1,
-                                                           @RequestParam(required = false) Integer projectId2){
-        return projectPaymentService.unionByProjectId(projectId1, projectId2);
-    }
-
-    @GetMapping("/sumMoneyByContribution")
-    public ResponseEntity<SumMoneyDto> sumMoneyByContribution(@RequestParam(required = false) Integer projectId){
-        return projectPaymentService.sumMoneyByContribution(projectId);
-    }
-
-    @GetMapping("/sumMoneyByContributionByDate")
-    public ResponseEntity<SumMoneyDto> sumMoneyByContributionByDate(@RequestParam(required = false) String fromDate, String toDate){
-        return projectPaymentService.sumMoneyByContributionByDate(fromDate, toDate);
-    }
-
-    @GetMapping("/sumMoneyByPayment")
-    public ResponseEntity<SumMoneyDto> sumMoneyByPayment(@RequestParam(required = false) Integer projectId){
-        return projectPaymentService.sumMoneyByPayment(projectId);
-    }
-
-    @GetMapping("/sumMoneyByPaymentByDate")
-    public ResponseEntity<SumMoneyDto> sumMoneyByPaymentByDate(@RequestParam(required = false) String fromDate, String toDate){
-        return projectPaymentService.sumMoneyByPaymentByDate(fromDate, toDate);
+                                                           @RequestParam(required = false) Integer projectId2,
+                                                           @RequestParam(required = false) String fromDate1,
+                                                           @RequestParam(required = false) String toDate1,
+                                                           @RequestParam(required = false) String fromDate2,
+                                                           @RequestParam(required = false) String toDate2){
+        return projectPaymentService.unionByProjectIdByDate(projectId1, projectId2, fromDate1, toDate1, fromDate2, toDate2);
     }
 
     @GetMapping("/project/{id}/payment")

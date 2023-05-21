@@ -7,6 +7,9 @@ import lombok.Data;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -17,7 +20,7 @@ public class ContributionCreatorDto {
     private Long projectId;
     private String nickname;
     private String projectName = "";
-    private String messages;
+    private String messages = "";
 
     private ContributionMoney contributionMoney;
 
@@ -28,7 +31,7 @@ public class ContributionCreatorDto {
     private long receivedAmount = 0;
     private long statueArtifactId = 1;
     private String paymentType = "Chuyển khoản ngân hàng";
-
+    private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
     public ContributionCreatorDto() {}
 
     public ContributionCreatorDto(String id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, long amountMoney, long statusMoneyId) {
@@ -58,7 +61,7 @@ public class ContributionCreatorDto {
         this.statueArtifactId = statueArtifactId;
     }
 
-    public ContributionCreatorDto(String id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, List<ContributionArtifact> contributionArtifacts, long amountMoney, long statusMoneyId, long receivedAmount, long statueArtifactId, String paymentType) {
+    public ContributionCreatorDto(String id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, List<ContributionArtifact> contributionArtifacts, long amountMoney, long statusMoneyId, long receivedAmount, long statueArtifactId, String paymentType, Date createdAt) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
@@ -72,5 +75,6 @@ public class ContributionCreatorDto {
         this.receivedAmount = receivedAmount;
         this.statueArtifactId = statueArtifactId;
         this.paymentType = paymentType;
+        this.createdAt = createdAt;
     }
 }
