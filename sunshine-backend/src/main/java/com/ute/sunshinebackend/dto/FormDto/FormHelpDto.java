@@ -13,9 +13,10 @@ import java.util.*;
 
 @Data
 public class FormHelpDto {
-    private String userName;
-    private String userEmail;
-    private String userPhone;
+    private long id;
+    private String fullName;
+    private String email;
+    private String phone;
     private String title;
     private String contents;
     private String statusName;
@@ -23,10 +24,11 @@ public class FormHelpDto {
 
     private List<FormImage> formImageList;
 
-    public FormHelpDto(String userName, String userEmail, String userPhone, String title, String contents, String statusName, Date createdAt, List<FormImage> formImageList) {
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPhone = userPhone;
+    public FormHelpDto(long id, String fullName, String email, String phone, String title, String contents, String statusName, Date createdAt, List<FormImage> formImageList) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
         this.title = title;
         this.contents = contents;
         this.statusName = statusName;

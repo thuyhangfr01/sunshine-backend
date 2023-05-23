@@ -43,12 +43,13 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectNameDto> projectNameDto = new ArrayList<ProjectNameDto>();
 
         for(int i = 0; i < project.size(); i++){
-            ProjectNameDto proNameDto = new ProjectNameDto(
-                    project.get(i).getId(),
-                    project.get(i).getName()
-            );
-
-            projectNameDto.add(proNameDto);
+            if(project.get(i).getProjectStatus().getId() == 1){
+                ProjectNameDto proNameDto = new ProjectNameDto(
+                        project.get(i).getId(),
+                        project.get(i).getName()
+                );
+                projectNameDto.add(proNameDto);
+            }
         }
         return new ResponseEntity<>(projectNameDto, HttpStatus.OK);
     }

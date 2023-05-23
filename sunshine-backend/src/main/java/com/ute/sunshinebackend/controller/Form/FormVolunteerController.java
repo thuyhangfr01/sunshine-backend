@@ -33,8 +33,8 @@ public class FormVolunteerController {
     }
 
     @PutMapping("/formVolunteer/status/{id}")
-    public ResponseEntity<FormStatus> updateStatusFormById(@PathVariable("id") Long formId, @RequestBody FormStatus formStatus){
-        return formVolunteerService.updateFormVolunteerStatus(formId, formStatus);
+    public ResponseEntity<FormVolunteerCreatorDto> updateStatusFormById(@PathVariable("id") Long formId, @RequestBody FormVolunteerCreatorDto formVolunteerCreatorDto){
+        return formVolunteerService.updateFormVolunteerStatus(formId, formVolunteerCreatorDto);
     }
 
     @DeleteMapping("/formVolunteer/{id}")

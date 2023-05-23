@@ -2,13 +2,13 @@ package com.ute.sunshinebackend.service.Form;
 
 import com.ute.sunshinebackend.dto.FormDto.FormVolunteerCreatorDto;
 import com.ute.sunshinebackend.dto.FormDto.FormVolunteerDto;
-import com.ute.sunshinebackend.entity.Form.FormStatus;
 import com.ute.sunshinebackend.entity.Form.FormVolunteer;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Form.FormStatusRepository;
 import com.ute.sunshinebackend.repository.Form.FormVolunteerRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
+import com.ute.sunshinebackend.service.Mail.FormVolunteer.MailVolunteerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +23,9 @@ import java.util.Optional;
 public class FormVolunteerServiceImpl implements FormVolunteerService{
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    public MailVolunteerService mailVolunteerService;
 
     @Autowired
     FormVolunteerRepository formVolunteerRepository;
@@ -100,18 +103,57 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
     }
 
     @Override
-    public ResponseEntity<FormStatus> updateFormVolunteerStatus(Long formId, FormStatus formStatus) {
+    public ResponseEntity<FormVolunteerCreatorDto> updateFormVolunteerStatus(Long formId, FormVolunteerCreatorDto formVolunteerCreatorDto) {
+        //convert dto to entity
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        FormVolunteer formVolunteerEntity = modelMapper.map(formVolunteerCreatorDto, FormVolunteer.class);
+
         //check co ton tai formId hay khong
         FormVolunteer formVolunteer = formVolunteerRepository.findById(formId)
                 .orElseThrow(() -> new ResourceNotFoundException("Form id not found"));
 
-        formStatusRepository.findById(formStatus.getId()).map(status -> {
-            formVolunteer.setFormStatus(status);
+        if(formVolunteerCreatorDto.getStatusId() == 2){
+            formStatusRepository.findById(formVolunteerCreatorDto.getId()).map(status -> {
+                formVolunteer.setFormStatus(status);
 
-            return formVolunteerRepository.save(formVolunteer);
-        }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
+                return formVolunteer;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-        return new ResponseEntity<>(formVolunteer.getFormStatus(), HttpStatus.OK);
+            projectRepository.findById(formVolunteerCreatorDto.getProjectId()).map(project -> {
+                formVolunteer.setProject(project);
+
+                return formVolunteer;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not project with id"));
+
+            formVolunteer.setId(formVolunteerEntity.getId());
+            formVolunteer.setEmail(formVolunteer.getEmail());
+            formVolunteer.setPhone(formVolunteer.getPhone());
+
+            mailVolunteerService.sendMail(formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã được duyệt");
+        } else if (formVolunteerCreatorDto.getStatusId() == 3){
+            formStatusRepository.findById(formVolunteerCreatorDto.getId()).map(status -> {
+                formVolunteer.setFormStatus(status);
+
+                return formVolunteer;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
+
+            projectRepository.findById(formVolunteerCreatorDto.getProjectId()).map(project -> {
+                formVolunteer.setProject(project);
+
+                return formVolunteer;
+            }).orElseThrow(() -> new ResourceNotFoundException("Not project with id"));
+
+            formVolunteer.setId(formVolunteerEntity.getId());
+            formVolunteer.setEmail(formVolunteer.getEmail());
+            formVolunteer.setPhone(formVolunteer.getPhone());
+
+            mailVolunteerService.sendMail(formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã bị từ chối");
+        }
+
+        //convert entity to dto
+        FormVolunteerCreatorDto formVolunteerCreatorDto1 = modelMapper.map(formVolunteerRepository.save(formVolunteer), FormVolunteerCreatorDto.class);
+
+        return new ResponseEntity<>(formVolunteerCreatorDto1, HttpStatus.OK);
     }
 
     @Override

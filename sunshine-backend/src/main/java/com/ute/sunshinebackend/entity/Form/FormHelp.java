@@ -21,17 +21,19 @@ public class FormHelp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "full_name")
+    private String fullName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
     @Column(name = "title")
     private String title;
 
     @Column(name = "contents")
     private String contents;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(FetchMode.JOIN)
-    private User user;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_status", referencedColumnName = "id", columnDefinition = "INT DEFAUT 1")

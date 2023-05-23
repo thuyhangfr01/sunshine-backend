@@ -1,7 +1,6 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
-import com.ute.sunshinebackend.entity.Project.ProjectMoney;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Project.ProjectArtifactRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;

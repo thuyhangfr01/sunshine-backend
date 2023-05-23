@@ -2,7 +2,6 @@ package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectPaymentCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectPaymentDto;
-import com.ute.sunshinebackend.dto.ProjectDto.SumMoneyDto;
 import com.ute.sunshinebackend.dto.ProjectDto.UnionDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.Project.ProjectPayment;
@@ -64,6 +63,25 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
     }
 
     @Override
+    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(String id) {
+        Boolean checkId = projectPaymentRepository.existsById(id);
+        ProjectPaymentDto projectPaymentDto = new ProjectPaymentDto();
+
+        if (checkId) {
+            Optional<ProjectPayment> projectPayment = projectPaymentRepository.findById(id);
+            projectPaymentDto.setId(projectPayment.get().getId());
+            projectPaymentDto.setAmountMoney(projectPayment.get().getAmountMoney());
+            projectPaymentDto.setReason(projectPayment.get().getReason());
+            projectPaymentDto.setUserName(projectPayment.get().getUser().getName());
+            projectPaymentDto.setProjectName(projectPayment.get().getProject().getName());
+            projectPaymentDto.setCreatedAt(projectPayment.get().getCreatedAt());
+
+            return new ResponseEntity<>(projectPaymentDto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
     public ResponseEntity<ProjectPaymentCreatorDto> createProjectPayment(ProjectPaymentCreatorDto projectPaymentCreatorDto) {
         //convert dto to entity
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -75,10 +93,10 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
         //project
         Optional<Project> project = projectRepository.findById(projectPaymentCreatorDto.getProjectId());
 
-        projectPaymentEntity.setAmountMoney(projectPaymentCreatorDto.getAmountMoney());
-        projectPaymentEntity.setReason(projectPaymentCreatorDto.getReason());
         projectPaymentEntity.setUser(user.get());
         projectPaymentEntity.setProject(project.get());
+        projectPaymentEntity.setAmountMoney(projectPaymentCreatorDto.getAmountMoney());
+        projectPaymentEntity.setReason(projectPaymentCreatorDto.getReason());
         projectPaymentEntity.setCreatedAt(projectPaymentCreatorDto.getCreatedAt());
         projectPaymentCreatorDto.setUserName(user.get().getName());
 
@@ -87,7 +105,6 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
 
         return new ResponseEntity<>(projectPaymentCreatorDto1, HttpStatus.CREATED);
     }
-
 
     @Override
     public ResponseEntity<List<UnionDto>> unionByDate(String fromDate1, String toDate1, String fromDate2, String toDate2) {
