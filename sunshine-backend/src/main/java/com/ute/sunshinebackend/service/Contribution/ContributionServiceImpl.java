@@ -7,7 +7,6 @@ import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.entity.User.User;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
-import com.ute.sunshinebackend.repository.Contribution.ContributionArtifactRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionMoneyRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionStatusRepository;

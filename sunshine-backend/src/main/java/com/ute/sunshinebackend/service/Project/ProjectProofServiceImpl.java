@@ -1,9 +1,7 @@
 package com.ute.sunshinebackend.service.Project;
 
-import com.ute.sunshinebackend.entity.Project.ProjectImage;
 import com.ute.sunshinebackend.entity.Project.ProjectProof;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
-import com.ute.sunshinebackend.repository.Project.ProjectImageRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectProofRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;

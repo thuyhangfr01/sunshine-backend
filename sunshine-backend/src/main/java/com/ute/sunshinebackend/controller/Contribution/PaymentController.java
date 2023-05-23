@@ -1,6 +1,6 @@
 package com.ute.sunshinebackend.controller.Contribution;
 
-import com.ute.sunshinebackend.config.Config;
+import com.ute.sunshinebackend.config.VnPayConfig;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -21,12 +21,12 @@ public class PaymentController {
 
     @GetMapping("/create_payment/{amount}")
     public ResponseEntity<?> createPayment(@PathVariable("amount") long amount) throws UnsupportedEncodingException {
-        String vnp_TxnRef = Config.getRandomNumber(8);
-        String vnp_TmnCode = Config.vnp_TmnCode;
+        String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
+        String vnp_TmnCode = VnPayConfig.vnp_TmnCode;
 
         Map<String, String> vnp_Params = new HashMap<>();
-        vnp_Params.put("vnp_Version", Config.vnp_Version);
-        vnp_Params.put("vnp_Command", Config.vnp_Command);
+        vnp_Params.put("vnp_Version", VnPayConfig.vnp_Version);
+        vnp_Params.put("vnp_Command", VnPayConfig.vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
@@ -34,7 +34,7 @@ public class PaymentController {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", Config.vnp_Returnurl);
+        vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_Returnurl);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -69,9 +69,9 @@ public class PaymentController {
             }
         }
         String queryUrl = query.toString();
-        String vnp_SecureHash = Config.hmacSHA512(Config.vnp_HashSecret, hashData.toString());
+        String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.vnp_HashSecret, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
+        String paymentUrl = VnPayConfig.vnp_PayUrl + "?" + queryUrl;
 
         PaymentResDto paymentResDto = new PaymentResDto();
         paymentResDto.setStatus("Ok");

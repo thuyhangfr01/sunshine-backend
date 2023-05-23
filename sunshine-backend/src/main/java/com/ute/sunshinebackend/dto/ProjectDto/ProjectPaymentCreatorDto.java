@@ -24,4 +24,13 @@ public class ProjectPaymentCreatorDto {
         this.userId = userId;
         this.createdAt = createdAt;
     }
+
+    public ProjectPaymentCreatorDto(long amountMoney, String reason, long projectId, long userId, Date createdAt, String userName) {
+        this.amountMoney = amountMoney;
+        this.reason = reason;
+        this.projectId = projectId;
+        this.userId = userId;
+        this.createdAt = createdAt;
+        this.userName = userName;
+    }
 }

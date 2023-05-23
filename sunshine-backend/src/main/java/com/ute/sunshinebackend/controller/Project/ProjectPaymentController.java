@@ -2,7 +2,6 @@ package com.ute.sunshinebackend.controller.Project;
 
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectPaymentCreatorDto;
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectPaymentDto;
-import com.ute.sunshinebackend.dto.ProjectDto.SumMoneyDto;
 import com.ute.sunshinebackend.dto.ProjectDto.UnionDto;
 import com.ute.sunshinebackend.service.Project.ProjectPaymentService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -19,11 +18,6 @@ public class ProjectPaymentController {
     @Autowired
     ProjectPaymentService projectPaymentService;
 
-
-//    @GetMapping("/unionByProjectId")
-//    public ResponseEntity<List<UnionDto>> unionByDate(){
-//        return projectPaymentService.union();
-//    }
     @GetMapping("/unionByDate")
     public ResponseEntity<List<UnionDto>> unionByDate(@RequestParam(required = true) String fromDate1,
                                                       @RequestParam(required = true) String toDate1,
@@ -45,6 +39,11 @@ public class ProjectPaymentController {
     @GetMapping("/project/{id}/payment")
     public ResponseEntity<List<ProjectPaymentDto>> getAllByProjectId(@PathVariable("id") Long projectId){
         return projectPaymentService.getAllPaymentByProjectId(projectId);
+    }
+
+    @GetMapping("/project/payment/{id}")
+    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(@PathVariable("id") String id){
+        return projectPaymentService.getProjectPaymentById(id);
     }
 
     @PostMapping("/project/payment")

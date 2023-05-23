@@ -17,7 +17,7 @@ public interface FormVolunteerService {
     public ResponseEntity<FormVolunteerCreatorDto> addFormVolunteer(FormVolunteerCreatorDto formVolunteerCreatorDto);
 
     //update status form volunteer by id
-    public ResponseEntity<FormStatus> updateFormVolunteerStatus(Long formId, FormStatus formStatus);
+    public ResponseEntity<FormVolunteerCreatorDto> updateFormVolunteerStatus(Long formId, FormVolunteerCreatorDto formVolunteerCreatorDto);
 
     //delete form volunteer by id
     public ResponseEntity<Boolean> deleteFormVolunteerById(Long formId);
