@@ -11,7 +11,7 @@ public interface FormVolunteerService {
     public ResponseEntity<List<FormVolunteerDto>> getLatestFormVolunteer();
 
     //get form by id
-    public ResponseEntity<FormVolunteerDto> getFormVolunteerById(Long id);
+    public ResponseEntity<List<FormVolunteerDto>> getLatestFormVolunteerByProjectId(Long id);
 
     //add new form volunteer
     public ResponseEntity<FormVolunteerCreatorDto> addFormVolunteer(FormVolunteerCreatorDto formVolunteerCreatorDto);

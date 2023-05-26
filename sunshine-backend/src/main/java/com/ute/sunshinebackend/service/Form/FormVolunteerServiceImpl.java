@@ -44,6 +44,7 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
             for (int i = 0; i < list.size(); i++) {
                 FormVolunteerDto formVolunteerDto = new FormVolunteerDto();
 
+                formVolunteerDto.setFullName(list.get(i).getFullName());
                 formVolunteerDto.setEmail(list.get(i).getEmail());
                 formVolunteerDto.setPhone(list.get(i).getPhone());
                 formVolunteerDto.setProjectName(list.get(i).getProject().getName());
@@ -59,19 +60,43 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
     }
 
     @Override
-    public ResponseEntity<FormVolunteerDto> getFormVolunteerById(Long id) {
-        FormVolunteer formVolunteer = formVolunteerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found form id"));
+    public ResponseEntity<List<FormVolunteerDto>> getLatestFormVolunteerByProjectId(Long id) {
+        List<FormVolunteerDto> listDto = new ArrayList<FormVolunteerDto>();
+        if(id == 0){
+            List<FormVolunteer> list = formVolunteerRepository.findByOrderByCreatedAtDesc();
+            for (int i = 0; i < list.size(); i++) {
+                FormVolunteerDto formVolunteerDto = new FormVolunteerDto();
 
-        FormVolunteerDto formVolunteerDto = new FormVolunteerDto(
-                formVolunteer.getEmail(),
-                formVolunteer.getPhone(),
-                formVolunteer.getProject().getName(),
-                formVolunteer.getFormStatus().getName(),
-                formVolunteer.getCreatedAt()
-        );
+                formVolunteerDto.setId(list.get(i).getId());
+                formVolunteerDto.setFullName(list.get(i).getFullName());
+                formVolunteerDto.setEmail(list.get(i).getEmail());
+                formVolunteerDto.setPhone(list.get(i).getPhone());
+                formVolunteerDto.setProjectName(list.get(i).getProject().getName());
+                formVolunteerDto.setProjectId(list.get(i).getProject().getId());
+                formVolunteerDto.setStatusName(list.get(i).getFormStatus().getName());
+                formVolunteerDto.setCreatedAt(list.get(i).getCreatedAt());
 
-        return new ResponseEntity<>(formVolunteerDto, HttpStatus.OK);
+                listDto.add(formVolunteerDto);
+            }
+        }
+        else{
+            List<FormVolunteer> list = formVolunteerRepository.findByProjectId(id);
+            for (int i = 0; i < list.size(); i++) {
+                FormVolunteerDto formVolunteerDto = new FormVolunteerDto();
+
+                formVolunteerDto.setId(list.get(i).getId());
+                formVolunteerDto.setFullName(list.get(i).getFullName());
+                formVolunteerDto.setEmail(list.get(i).getEmail());
+                formVolunteerDto.setPhone(list.get(i).getPhone());
+                formVolunteerDto.setProjectName(list.get(i).getProject().getName());
+                formVolunteerDto.setProjectId(list.get(i).getProject().getId());
+                formVolunteerDto.setStatusName(list.get(i).getFormStatus().getName());
+                formVolunteerDto.setCreatedAt(list.get(i).getCreatedAt());
+
+                listDto.add(formVolunteerDto);
+            }
+        }
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
 
     @Override
@@ -85,6 +110,7 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
             Optional<Project> project = projectRepository.findById(formVolunteerCreatorDto.getProjectId());
 
             formVolunteerEntity.setProject(project.get());
+            formVolunteerEntity.setFullName(formVolunteerCreatorDto.getFullName());
             formVolunteerEntity.setEmail(formVolunteerCreatorDto.getEmail());
             formVolunteerEntity.setPhone(formVolunteerCreatorDto.getPhone());
             formStatusRepository.findById(formVolunteerCreatorDto.getStatusId()).map(formStatus -> {
@@ -113,7 +139,7 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
                 .orElseThrow(() -> new ResourceNotFoundException("Form id not found"));
 
         if(formVolunteerCreatorDto.getStatusId() == 2){
-            formStatusRepository.findById(formVolunteerCreatorDto.getId()).map(status -> {
+            formStatusRepository.findById(formVolunteerCreatorDto.getStatusId()).map(status -> {
                 formVolunteer.setFormStatus(status);
 
                 return formVolunteer;
@@ -125,11 +151,12 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
                 return formVolunteer;
             }).orElseThrow(() -> new ResourceNotFoundException("Not project with id"));
 
-            formVolunteer.setId(formVolunteerEntity.getId());
+            formVolunteer.setId(formId);
+            formVolunteer.setFullName(formVolunteer.getFullName());
             formVolunteer.setEmail(formVolunteer.getEmail());
             formVolunteer.setPhone(formVolunteer.getPhone());
 
-            mailVolunteerService.sendMail(formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã được duyệt");
+            mailVolunteerService.sendMail(formVolunteer.getFullName(), formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã được duyệt");
         } else if (formVolunteerCreatorDto.getStatusId() == 3){
             formStatusRepository.findById(formVolunteerCreatorDto.getId()).map(status -> {
                 formVolunteer.setFormStatus(status);
@@ -137,17 +164,18 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
                 return formVolunteer;
             }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-            projectRepository.findById(formVolunteerCreatorDto.getProjectId()).map(project -> {
+            projectRepository.findById(formVolunteerCreatorDto.getStatusId()).map(project -> {
                 formVolunteer.setProject(project);
 
                 return formVolunteer;
             }).orElseThrow(() -> new ResourceNotFoundException("Not project with id"));
 
-            formVolunteer.setId(formVolunteerEntity.getId());
+            formVolunteer.setId(formId);
+            formVolunteer.setFullName(formVolunteer.getFullName());
             formVolunteer.setEmail(formVolunteer.getEmail());
             formVolunteer.setPhone(formVolunteer.getPhone());
 
-            mailVolunteerService.sendMail(formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã bị từ chối");
+            mailVolunteerService.sendMail(formVolunteer.getFullName(), formVolunteer.getEmail(), formVolunteer.getProject().getName(), "đã bị từ chối");
         }
 
         //convert entity to dto

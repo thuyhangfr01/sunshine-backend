@@ -42,7 +42,7 @@ public class FormHelpController {
 //        return formHelpService.updateFormHelpById(formId, formHelpCreatorDto);
 //    }
 
-    @PutMapping("/formHelp/status/{id}")
+    @PutMapping("/formHelp/{id}/status")
     public ResponseEntity<FormHelpCreatorDto> updateStatusFormById(@PathVariable("id") Long formId, @RequestBody FormHelpCreatorDto formHelpCreatorDto){
         return formHelpService.updateFormHelpStatus(formId, formHelpCreatorDto);
     }

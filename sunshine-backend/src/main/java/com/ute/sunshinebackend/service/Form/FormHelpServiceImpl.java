@@ -167,10 +167,10 @@ public class FormHelpServiceImpl implements FormHelpService{
             formStatusRepository.findById(formHelpCreatorDto.getStatusId()).map(status -> {
                 formHelp.setFormStatus(status);
 
-                return formHelpRepository.save(formHelp);
+                return formHelp;
             }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-            formHelp.setId(formHelpEntity.getId());
+            formHelp.setId(formId);
             formHelp.setEmail(formHelpEntity.getEmail());
             formHelp.setPhone(formHelpEntity.getPhone());
             formHelp.setFullName(formHelpEntity.getFullName());
@@ -178,7 +178,7 @@ public class FormHelpServiceImpl implements FormHelpService{
             formHelp.setContents(formHelpEntity.getContents());
             formHelp.setFormImages(formHelpEntity.getFormImages());
 
-            mailService.sendMail(formHelpCreatorDto.getFullName(), formHelpCreatorDto.getTitle(), "đã được duyệt");
+            mailService.sendMail(formHelpCreatorDto.getFullName(), formHelpCreatorDto.getTitle(), "đã được duyệt", formHelpCreatorDto.getEmail());
         } else if(formHelpCreatorDto.getStatusId() == 3) {
             formStatusRepository.findById(formHelpCreatorDto.getStatusId()).map(status -> {
                 formHelp.setFormStatus(status);
@@ -186,7 +186,7 @@ public class FormHelpServiceImpl implements FormHelpService{
                 return formHelp;
             }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-            formHelp.setId(formHelpEntity.getId());
+            formHelp.setId(formId);
             formHelp.setEmail(formHelpEntity.getEmail());
             formHelp.setPhone(formHelpEntity.getPhone());
             formHelp.setFullName(formHelpEntity.getFullName());
@@ -194,7 +194,7 @@ public class FormHelpServiceImpl implements FormHelpService{
             formHelp.setContents(formHelpEntity.getContents());
             formHelp.setFormImages(formHelpEntity.getFormImages());
 
-            mailService.sendMail(formHelpCreatorDto.getFullName(), formHelpCreatorDto.getTitle(), "đã bị từ chối");
+            mailService.sendMail(formHelpCreatorDto.getFullName(), formHelpCreatorDto.getTitle(), "đã bị từ chối", formHelpCreatorDto.getEmail());
         }
 
         FormHelpCreatorDto formHelpCreatorDto1 = modelMapper.map(formHelpRepository.save(formHelp), FormHelpCreatorDto.class);

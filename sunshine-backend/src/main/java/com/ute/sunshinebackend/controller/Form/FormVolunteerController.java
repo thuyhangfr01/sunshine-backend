@@ -22,9 +22,9 @@ public class FormVolunteerController {
         return formVolunteerService.getLatestFormVolunteer();
     }
 
-    @GetMapping("/formVolunteer/{id}")
-    public ResponseEntity<FormVolunteerDto> getFormVolunteerById(@PathVariable("id") Long formId){
-        return formVolunteerService.getFormVolunteerById(formId);
+    @GetMapping("/latestFormVolunteer/project/{id}")
+    public ResponseEntity<List<FormVolunteerDto>> getLatestFormVolunteerByProjectId(@PathVariable("id") Long id){
+        return formVolunteerService.getLatestFormVolunteerByProjectId(id);
     }
 
     @PostMapping("/formVolunteer")
@@ -32,7 +32,7 @@ public class FormVolunteerController {
         return formVolunteerService.addFormVolunteer(formVolunteerCreatorDto);
     }
 
-    @PutMapping("/formVolunteer/status/{id}")
+    @PutMapping("/formVolunteer/{id}/status")
     public ResponseEntity<FormVolunteerCreatorDto> updateStatusFormById(@PathVariable("id") Long formId, @RequestBody FormVolunteerCreatorDto formVolunteerCreatorDto){
         return formVolunteerService.updateFormVolunteerStatus(formId, formVolunteerCreatorDto);
     }

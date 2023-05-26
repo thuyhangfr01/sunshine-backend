@@ -25,7 +25,7 @@ public class MailService {
     @Autowired
     ThymeleafService thymeleafService;
 
-    public void sendMail(String fullName, String title, String status) {
+    public void sendMail(String fullName, String title, String status, String _email) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.starttls.enable", "true");
@@ -41,10 +41,10 @@ public class MailService {
                 });
         Message message = new MimeMessage(session);
         try {
-            message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress("thuyhangfr01@gmail.com")});
+            message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress(_email)});
 
             message.setFrom(new InternetAddress(email));
-            message.setSubject("Qũy từ thiện Sunshine - Phản hồi đơn yêu cầu ỗ trợ");
+            message.setSubject("Qũy từ thiện Sunshine - Phản hồi đơn yêu cầu hỗ trợ");
             message.setContent(thymeleafService.getContent(fullName, title, status), CONTENT_TYPE_TEXT_HTML);
             Transport.send(message);
         } catch (MessagingException e) {
