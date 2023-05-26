@@ -11,13 +11,15 @@ public class FormVolunteerCreatorDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String fullName;
     private String email;
     private String phone;
     private long projectId;
     private long statusId = 1;
 
-    public FormVolunteerCreatorDto(long id, String email, String phone, long projectId, long statusId) {
+    public FormVolunteerCreatorDto(long id, String fullName, String email, String phone, long projectId, long statusId) {
         this.id = id;
+        this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.projectId = projectId;

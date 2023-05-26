@@ -25,7 +25,7 @@ public class MailVolunteerService {
     @Autowired
     ThymeleafVolunteerService thymeleafVolunteerService;
 
-    public void sendMail(String _email, String projectName, String status) {
+    public void sendMail(String fullName, String _email, String projectName, String status) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.starttls.enable", "true");
@@ -41,11 +41,11 @@ public class MailVolunteerService {
                 });
         Message message = new MimeMessage(session);
         try {
-            message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress("thuyhangfr01@gmail.com")});
+            message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress(_email)});
 
             message.setFrom(new InternetAddress(email));
             message.setSubject("Qũy từ thiện Sunshine - Phản hồi đơn đăng ký tình nguyện viên");
-            message.setContent(thymeleafVolunteerService.getContent(_email, projectName, status), CONTENT_TYPE_TEXT_HTML);
+            message.setContent(thymeleafVolunteerService.getContent(fullName, projectName, status), CONTENT_TYPE_TEXT_HTML);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

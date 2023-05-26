@@ -49,18 +49,18 @@ public class ThymeleafVolunteerService {
         return templateResolver;
     }
 
-    public String getContent(String email, String projectName, String status) {
+    public String getContent(String fullName, String projectName, String status) {
         final Context context = new Context();
 
         if(status == "đã được duyệt"){
-            context.setVariable("email", email);
+            context.setVariable("fullName", fullName);
             context.setVariable("projectName", projectName);
             context.setVariable("status", status);
 
             return templateEngine.process(TEMPLATE_NAME_ACCEPTED, context);
         }
         else{
-            context.setVariable("email", email);
+            context.setVariable("fullName", fullName);
             context.setVariable("projectName", projectName);
             context.setVariable("status", status);
 

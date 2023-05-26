@@ -12,6 +12,6 @@ import java.util.List;
 public interface FormVolunteerRepository extends JpaRepository<FormVolunteer, Long> {
     List<FormVolunteer> findByOrderByCreatedAtDesc();
 
-    @Query(value = "SELECT f.* FROM form_volunteers f, projects p WHERE f.id_project = p.id and f.id_project = :projectId", nativeQuery = true)
+    @Query(value = "SELECT f.* FROM form_volunteers f, projects p WHERE f.id_project = p.id and f.id_project = :projectId ORDER BY created_at DESC", nativeQuery = true)
     List<FormVolunteer> findByProjectId(Long projectId);
 }
