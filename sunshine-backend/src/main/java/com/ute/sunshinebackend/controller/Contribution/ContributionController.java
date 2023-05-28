@@ -43,6 +43,11 @@ public class ContributionController {
         return contributionService.getAllContributionByProjectId(projectId);
     }
 
+    @GetMapping("/contribution/project/{id}/status")
+    private ResponseEntity<List<ContributionDto>> getAllContributionByProjectIdByStatus(@PathVariable("id") Long projectId){
+        return contributionService.getAllContributionByProjectIdByStatus(projectId);
+    }
+
     @PostMapping("/contribution")
     private ResponseEntity<ContributionCreatorDto> addContribution(@RequestBody ContributionCreatorDto contributionCreatorDto){
         return contributionService.addContribution(contributionCreatorDto);

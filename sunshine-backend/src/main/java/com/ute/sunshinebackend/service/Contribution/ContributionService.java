@@ -23,6 +23,8 @@ public interface ContributionService {
 
     //get all contributions by project id
     public ResponseEntity<List<ContributionDto>> getAllContributionByProjectId(Long projectId);
+    //get all contributions by project id
+    public ResponseEntity<List<ContributionDto>> getAllContributionByProjectIdByStatus(Long projectId);
 
     //create new contribution
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto);

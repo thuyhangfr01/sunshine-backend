@@ -20,6 +20,12 @@ public interface ContributionRepository extends JpaRepository<Contribution, Stri
     @Query(value = "SELECT c.* FROM contributions c, projects p WHERE c.id_project = p.id and c.id_project = :idProject", nativeQuery = true)
     List<Contribution> findByProjectId(Long idProject);
 
+    @Query(value = "select * " +
+            "from contributions c, contribution_money cm, contribution_status cs, projects p " +
+            "where c.id_contribution_money = cm.id and cm.id_status = cs.id and c.id_project = p.id " +
+            "and c.id_project = :idProject and cm.id_status = 3 ", nativeQuery = true)
+    List<Contribution> findByProjectIdByStatus(Long idProject);
+
     @Query(nativeQuery = true, value = "SELECT DBO.AUTO_IDC()")
     String geneId();
 

@@ -211,6 +211,42 @@ public class ContributionServiceImpl implements ContributionService {
     }
 
     @Override
+    public ResponseEntity<List<ContributionDto>> getAllContributionByProjectIdByStatus(Long projectId) {
+        try {
+            List<Contribution> list = contributionRepository.findByProjectIdByStatus(projectId);
+            List<ContributionDto> contributionDtoList = new ArrayList<ContributionDto>();
+
+            for (int i = 0; i < list.size(); i++) {
+                ContributionDto contributionDto = new ContributionDto();
+
+                contributionDto.setId(list.get(i).getId());
+                contributionDto.setNickname(list.get(i).getNickname());
+                contributionDto.setMessages(list.get(i).getMessages());
+                contributionDto.setUserName(list.get(i).getUser().getName());
+                contributionDto.setUserEmail(list.get(i).getUser().getEmail());
+                contributionDto.setUserPhone(list.get(i).getUser().getPhone());
+                contributionDto.setProjectName(list.get(i).getProject().getName());
+                contributionDto.setProjectType(list.get(i).getProject().getProjectType().getName());
+                contributionDto.setContributionMoney(list.get(i).getContributionMoney().getAmountMoney());
+                contributionDto.setMoneyStatus(list.get(i).getContributionMoney().getMcontributionStatus().getName());
+                contributionDto.setPaymentType(list.get(i).getPaymentType());
+                contributionDto.setCreatedAt(list.get(i).getCreatedAt());
+
+                List<ContributionArtifactDto> contributionArtifactDto = new ArrayList<ContributionArtifactDto>();
+                contributionArtifactDto = contributionArtifactService.getArtifactsByContributionId(list.get(i).getId()).getBody();
+                if (contributionArtifactDto != null) {
+                    contributionDto.setContributionArtifactDto(contributionArtifactDto);
+                }
+
+                contributionDtoList.add(contributionDto);
+            }
+            return new ResponseEntity<>(contributionDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto) {
 
 //        try {
