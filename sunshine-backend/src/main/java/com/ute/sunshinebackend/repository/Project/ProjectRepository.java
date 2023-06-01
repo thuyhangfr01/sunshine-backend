@@ -14,9 +14,9 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     boolean existsById(Long idProject);
     Page<Project> findAll(Pageable pageable);
-    Page<Project> findByNameContaining(String name, Pageable pageable);
-    Page<Project> findByProjectTypeId(Long idType, Pageable pageable);
-    Page<Project> findByProjectStatusId(Long idStatus, Pageable pageable);
+    Page<Project> findByNameContainingOrderByCreatedAtDesc(String name, Pageable pageable);
+    Page<Project> findByProjectTypeIdOrderByCreatedAtDesc(Long idType, Pageable pageable);
+    Page<Project> findByProjectStatusIdOrderByCreatedAtDesc(Long idStatus, Pageable pageable);
     Page<Project> findByOrderByCreatedAtDesc(Pageable pageable);
     List<Project> findByNameContainingOrderByCreatedAtDesc(String name);
     List<Project> findByOrderByCreatedAtDesc();

@@ -41,10 +41,10 @@ public class ProjectPaymentController {
         return projectPaymentService.getAllPaymentByProjectId(projectId);
     }
 
-    @GetMapping("/project/payment/{id}")
-    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(@PathVariable("id") String id){
-        return projectPaymentService.getProjectPaymentById(id);
-    }
+//    @GetMapping("/project/payment/{id}")
+//    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(@PathVariable("id") String id){
+//        return projectPaymentService.getProjectPaymentById(id);
+//    }
 
     @PostMapping("/project/payment")
     public ResponseEntity<ProjectPaymentCreatorDto> createProjectPayment(@RequestBody ProjectPaymentCreatorDto projectPaymentCreatorDto){

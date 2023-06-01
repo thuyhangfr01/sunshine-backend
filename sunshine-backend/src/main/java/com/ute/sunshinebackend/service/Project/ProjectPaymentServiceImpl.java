@@ -40,46 +40,44 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
     public ContributionRepository contributionRepository;
     @Override
     public ResponseEntity<List<ProjectPaymentDto>> getAllPaymentByProjectId(long projectId) {
-        try {
-            List<ProjectPayment> list = projectPaymentRepository.findByProjectId(projectId);
-            List<ProjectPaymentDto> projectPaymentDtoList = new ArrayList<ProjectPaymentDto>();
+        List<ProjectPaymentDto> projectPaymentDtoList = new ArrayList<>();
+        List<Object []> result = projectPaymentRepository.findByProjectId(projectId);
 
-            for (int i = 0; i < list.size(); i++) {
-                ProjectPaymentDto projectPaymentDto = new ProjectPaymentDto();
+        for(Object[] row : result){
+            ProjectPaymentDto projectPaymentDto = new ProjectPaymentDto();
 
-                projectPaymentDto.setId(list.get(i).getId());
-                projectPaymentDto.setAmountMoney(list.get(i).getAmountMoney());
-                projectPaymentDto.setReason(list.get(i).getReason());
-                projectPaymentDto.setCreatedAt(list.get(i).getCreatedAt());
-                projectPaymentDto.setProjectName(list.get(i).getProject().getName());
-                projectPaymentDto.setUserName(list.get(i).getUser().getName());
+            projectPaymentDto.setId((String) row[0]);
+            projectPaymentDto.setAmountMoney((BigDecimal) row[1]);
+            projectPaymentDto.setReason((String) row[2]);
+            projectPaymentDto.setCreatedAt((Date) row[3]);
+            projectPaymentDto.setReceiver((String) row[4]);
+            projectPaymentDto.setUserName((String) row[5]);
 
-                projectPaymentDtoList.add(projectPaymentDto);
-            }
-            return new ResponseEntity<>(projectPaymentDtoList, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            projectPaymentDtoList.add(projectPaymentDto);
         }
+
+        return new ResponseEntity<>(projectPaymentDtoList, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(String id) {
-        Boolean checkId = projectPaymentRepository.existsById(id);
-        ProjectPaymentDto projectPaymentDto = new ProjectPaymentDto();
-
-        if (checkId) {
-            Optional<ProjectPayment> projectPayment = projectPaymentRepository.findById(id);
-            projectPaymentDto.setId(projectPayment.get().getId());
-            projectPaymentDto.setAmountMoney(projectPayment.get().getAmountMoney());
-            projectPaymentDto.setReason(projectPayment.get().getReason());
-            projectPaymentDto.setUserName(projectPayment.get().getUser().getName());
-            projectPaymentDto.setProjectName(projectPayment.get().getProject().getName());
-            projectPaymentDto.setCreatedAt(projectPayment.get().getCreatedAt());
-
-            return new ResponseEntity<>(projectPaymentDto, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    }
+//    @Override
+//    public ResponseEntity<ProjectPaymentDto> getProjectPaymentById(String id) {
+//        Boolean checkId = projectPaymentRepository.existsById(id);
+//        ProjectPaymentDto projectPaymentDto = new ProjectPaymentDto();
+//
+//        if (checkId) {
+//            Optional<ProjectPayment> projectPayment = projectPaymentRepository.findById(id);
+//            projectPaymentDto.setId(projectPayment.get().getId());
+//            projectPaymentDto.setAmountMoney(projectPayment.get().getAmountMoney());
+//            projectPaymentDto.setReason(projectPayment.get().getReason());
+//            projectPaymentDto.setUserName(projectPayment.get().getUser().getName());
+//            projectPaymentDto.setProjectName(projectPayment.get().getProject().getName());
+//            projectPaymentDto.setReceiver(projectPayment.get().getReceiver());
+//            projectPaymentDto.setCreatedAt(projectPayment.get().getCreatedAt());
+//
+//            return new ResponseEntity<>(projectPaymentDto, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//    }
 
     @Override
     public ResponseEntity<ProjectPaymentCreatorDto> createProjectPayment(ProjectPaymentCreatorDto projectPaymentCreatorDto) {
@@ -97,6 +95,7 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
         projectPaymentEntity.setProject(project.get());
         projectPaymentEntity.setAmountMoney(projectPaymentCreatorDto.getAmountMoney());
         projectPaymentEntity.setReason(projectPaymentCreatorDto.getReason());
+        projectPaymentEntity.setReceiver(projectPaymentCreatorDto.getReceiver());
         projectPaymentEntity.setCreatedAt(projectPaymentCreatorDto.getCreatedAt());
         projectPaymentCreatorDto.setUserName(user.get().getName());
 
@@ -118,7 +117,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
             unionDto.setUserName((String) row[2]);
             unionDto.setType((String) row[3]);
             unionDto.setCreatedAt((Date) row[4]);
-            unionDto.setProjectId((Integer) row[5]);
+            unionDto.setReceiver((String) row[5]);
+            unionDto.setProjectId((Integer) row[6]);
 
             unionDtos.add(unionDto);
         }
@@ -140,7 +140,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
                 unionDto.setUserName((String) row[2]);
                 unionDto.setType((String) row[3]);
                 unionDto.setCreatedAt((Date) row[4]);
-                unionDto.setProjectId((Integer) row[5]);
+                unionDto.setReceiver((String) row[5]);
+                unionDto.setProjectId((Integer) row[6]);
 
                 unionDtos.add(unionDto);
             }
@@ -156,7 +157,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
                 unionDto.setUserName((String) row[2]);
                 unionDto.setType((String) row[3]);
                 unionDto.setCreatedAt((Date) row[4]);
-                unionDto.setProjectId((Integer) row[5]);
+                unionDto.setReceiver((String) row[5]);
+                unionDto.setProjectId((Integer) row[6]);
 
                 unionDtos.add(unionDto);
             }
@@ -171,7 +173,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
                 unionDto.setUserName((String) row[2]);
                 unionDto.setType((String) row[3]);
                 unionDto.setCreatedAt((Date) row[4]);
-                unionDto.setProjectId((Integer) row[5]);
+                unionDto.setReceiver((String) row[5]);
+                unionDto.setProjectId((Integer) row[6]);
 
                 unionDtos.add(unionDto);
             }
@@ -186,7 +189,9 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
                 unionDto.setUserName((String) row[2]);
                 unionDto.setType((String) row[3]);
                 unionDto.setCreatedAt((Date) row[4]);
-                unionDto.setProjectId((Integer) row[5]);
+                unionDto.setReceiver((String) row[5]);
+                unionDto.setProjectId((Integer) row[6]);
+
 
                 unionDtos.add(unionDto);
             }
@@ -206,7 +211,8 @@ public class ProjectPaymentServiceImpl implements ProjectPaymentService {
             unionDto.setUserName((String) row[2]);
             unionDto.setType((String) row[3]);
             unionDto.setCreatedAt((Date) row[4]);
-            unionDto.setProjectId((Integer) row[5]);
+            unionDto.setReceiver((String) row[5]);
+            unionDto.setProjectId((Integer) row[6]);
 
             unionDtos.add(unionDto);
         }

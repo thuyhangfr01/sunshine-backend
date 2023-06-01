@@ -28,6 +28,9 @@ public class ProjectPayment {
     @Column(name = "reason")
     private String reason;
 
+    @Column(name = "receiver")
+    private String receiver;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());

@@ -14,6 +14,7 @@ public class ProjectPaymentCreatorDto {
     private long userId;
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
     private String userName;
+    private String receiver;
     public ProjectPaymentCreatorDto() {
     }
 
@@ -25,12 +26,13 @@ public class ProjectPaymentCreatorDto {
         this.createdAt = createdAt;
     }
 
-    public ProjectPaymentCreatorDto(long amountMoney, String reason, long projectId, long userId, Date createdAt, String userName) {
+    public ProjectPaymentCreatorDto(long amountMoney, String reason, long projectId, long userId, Date createdAt, String userName, String receiver) {
         this.amountMoney = amountMoney;
         this.reason = reason;
         this.projectId = projectId;
         this.userId = userId;
         this.createdAt = createdAt;
         this.userName = userName;
+        this.receiver = receiver;
     }
 }

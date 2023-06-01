@@ -12,15 +12,18 @@ import java.util.List;
 @Repository
 public interface ProjectPaymentRepository extends JpaRepository<ProjectPayment, String>, JpaSpecificationExecutor<ProjectPayment> {
 
-    @Query(value = "SELECT c.* FROM project_payment c, projects p WHERE c.id_project = p.id and c.id_project = :projectId", nativeQuery = true)
-    List<ProjectPayment> findByProjectId(Long projectId);
+    @Query(value = "SELECT pp.id, pp.amount_money, pp.reason, pp.created_at, pp.receiver, u.name " +
+            "FROM project_payment pp, projects p, users as u " +
+            "WHERE pp.id_project = p.id and pp.id_user = u.id and pp.id_project = :projectId ",
+            nativeQuery = true)
+    List findByProjectId(Long projectId);
 
     @Query(value =
-            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, p1.id as 'projectId' " +
+            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, c.receiver,  p1.id as 'projectId' " +
             "FROM contributions as c, contribution_money as cm, users as u1, projects as p1 " +
             "WHERE c.id_contribution_money = cm.id and c.id_user = u1.id and c.id_project = p1.id " +
             "UNION " +
-            "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, p2.id as 'projectId' " +
+            "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, pp.receiver, p2.id as 'projectId' " +
             "FROM project_payment as pp, users as u2, projects as p2 " +
             "WHERE pp.id_user = u2.id and pp.id_project = p2.id " +
             "ORDER BY c.created_at desc",
@@ -28,12 +31,12 @@ public interface ProjectPaymentRepository extends JpaRepository<ProjectPayment, 
     List union();
 
     @Query(value =
-            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, p1.id as 'projectId' " +
+            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, c.receiver, p1.id as 'projectId' " +
                     "FROM contributions as c, contribution_money as cm, users as u1, projects as p1 " +
                     "WHERE c.id_contribution_money = cm.id and c.id_user = u1.id and c.id_project = p1.id " +
                     "   and p1.id = :projectId1 " +
                     "UNION " +
-                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, p2.id as 'projectId' " +
+                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at,  pp.receiver , p2.id as 'projectId' " +
                     "FROM project_payment as pp, users as u2, projects as p2 " +
                     "WHERE pp.id_user = u2.id and pp.id_project = p2.id " +
                     "   and p2.id = :projectId2 " +
@@ -42,12 +45,12 @@ public interface ProjectPaymentRepository extends JpaRepository<ProjectPayment, 
     List unionByProjectId(Integer projectId1, Integer projectId2);
 
     @Query(value =
-            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, p1.id as 'projectId' " +
+            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, c.receiver,  p1.id as 'projectId' " +
                     "FROM contributions as c, contribution_money as cm, users as u1, projects as p1 " +
                     "WHERE c.id_contribution_money = cm.id and c.id_user = u1.id and c.id_project = p1.id " +
                     "   and c.created_at between :fromDate1 and :toDate1 " +
                     "UNION " +
-                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, p2.id as 'projectId' " +
+                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, pp.receiver ,  p2.id as 'projectId' " +
                     "FROM project_payment as pp, users as u2, projects as p2 " +
                     "WHERE pp.id_user = u2.id and pp.id_project = p2.id " +
                     "   and pp.created_at between :fromDate2 and :toDate2 " +
@@ -56,13 +59,13 @@ public interface ProjectPaymentRepository extends JpaRepository<ProjectPayment, 
     List unionByDate(String fromDate1, String toDate1, String fromDate2, String toDate2);
 
     @Query(value =
-            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, p1.id as 'projectId' " +
+            "SELECT c.id, cm.amount_money, c.nickname, c.payment_type, c.created_at, c.receiver, p1.id as 'projectId'  " +
                     "FROM contributions as c, contribution_money as cm, users as u1, projects as p1 " +
                     "WHERE c.id_contribution_money = cm.id and c.id_user = u1.id and c.id_project = p1.id " +
                     " and p1.id = :projectId1 " +
                     " and c.created_at between :fromDate1 and :toDate1 " +
                     "UNION " +
-                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, p2.id as 'projectId' " +
+                    "SELECT pp.id, pp.amount_money, u2.name, pp.reason, pp.created_at, pp.receiver , p2.id as 'projectId'" +
                     "FROM project_payment as pp, users as u2, projects as p2 " +
                     "WHERE pp.id_user = u2.id and pp.id_project = p2.id " +
                     " and p2.id = :projectId2  " +
