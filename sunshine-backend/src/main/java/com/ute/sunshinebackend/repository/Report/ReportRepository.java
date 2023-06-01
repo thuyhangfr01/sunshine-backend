@@ -1,4 +1,4 @@
-package com.ute.sunshinebackend.repository;
+package com.ute.sunshinebackend.repository.Report;
 
 
 import com.ute.sunshinebackend.entity.Report;

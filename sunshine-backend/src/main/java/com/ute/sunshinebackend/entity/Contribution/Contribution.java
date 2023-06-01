@@ -63,6 +63,17 @@ public class Contribution {
     @Column(name = "payment_type")
     private String paymentType;
 
+    @Column(name = "receiver")
+    private String receiver;
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
     public String getId() {
         return id;
     }

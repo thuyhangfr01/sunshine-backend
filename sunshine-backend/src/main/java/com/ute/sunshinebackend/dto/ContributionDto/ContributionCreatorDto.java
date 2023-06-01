@@ -31,6 +31,8 @@ public class ContributionCreatorDto {
     private long receivedAmount = 0;
     private long statueArtifactId = 1;
     private String paymentType = "Chuyển khoản ngân hàng";
+
+    private String receiver = "Qũy Sunshine";
     private Date createdAt = Timestamp.valueOf(LocalDateTime.now());
     public ContributionCreatorDto() {}
 
@@ -61,7 +63,7 @@ public class ContributionCreatorDto {
         this.statueArtifactId = statueArtifactId;
     }
 
-    public ContributionCreatorDto(String id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, List<ContributionArtifact> contributionArtifacts, long amountMoney, long statusMoneyId, long receivedAmount, long statueArtifactId, String paymentType, Date createdAt) {
+    public ContributionCreatorDto(String id, Long userId, Long projectId, String nickname, String projectName, String messages, ContributionMoney contributionMoney, List<ContributionArtifact> contributionArtifacts, long amountMoney, long statusMoneyId, long receivedAmount, long statueArtifactId, String paymentType, String receiver, Date createdAt) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
@@ -75,6 +77,7 @@ public class ContributionCreatorDto {
         this.receivedAmount = receivedAmount;
         this.statueArtifactId = statueArtifactId;
         this.paymentType = paymentType;
+        this.receiver = receiver;
         this.createdAt = createdAt;
     }
 }

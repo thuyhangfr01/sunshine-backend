@@ -43,13 +43,11 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectNameDto> projectNameDto = new ArrayList<ProjectNameDto>();
 
         for(int i = 0; i < project.size(); i++){
-            if(project.get(i).getProjectStatus().getId() == 1){
-                ProjectNameDto proNameDto = new ProjectNameDto(
-                        project.get(i).getId(),
-                        project.get(i).getName()
-                );
-                projectNameDto.add(proNameDto);
-            }
+            ProjectNameDto proNameDto = new ProjectNameDto(
+                    project.get(i).getId(),
+                    project.get(i).getName()
+            );
+            projectNameDto.add(proNameDto);
         }
         return new ResponseEntity<>(projectNameDto, HttpStatus.OK);
     }
@@ -69,9 +67,9 @@ public class ProjectServiceImpl implements ProjectService {
 
             Page<Project> pageProjs;
             if (name == null)
-                pageProjs = projectRepository.findAll(paging);
+                pageProjs = projectRepository.findByOrderByCreatedAtDesc(paging);
             else
-                pageProjs = projectRepository.findByNameContaining(name, paging);
+                pageProjs = projectRepository.findByNameContainingOrderByCreatedAtDesc(name, paging);
 
             projects = pageProjs.getContent();
 
@@ -100,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
             Pageable paging = PageRequest.of(page, size);
 
             Page<Project> pageProjs;
-            pageProjs = projectRepository.findByProjectTypeId(idType, paging);
+            pageProjs = projectRepository.findByProjectTypeIdOrderByCreatedAtDesc(idType, paging);
 
             projects = pageProjs.getContent();
 
@@ -123,7 +121,7 @@ public class ProjectServiceImpl implements ProjectService {
             Pageable paging = PageRequest.of(page, size);
 
             Page<Project> pageProjs;
-            pageProjs = projectRepository.findByProjectStatusId(idStatus, paging);
+            pageProjs = projectRepository.findByProjectStatusIdOrderByCreatedAtDesc(idStatus, paging);
 
             projects = pageProjs.getContent();
 
@@ -160,12 +158,6 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @Override
-//    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable) {
-//        Page<ProjectListDto> projects = projectRepository.findTop5LatestProjects(pageable);
-//        return new ResponseEntity<>(projects, HttpStatus.OK);
-//    }
 
     @Override
     public ResponseEntity<ProjectCreatorDto> addProject(ProjectCreatorDto projectCreatorDtoRequest) {

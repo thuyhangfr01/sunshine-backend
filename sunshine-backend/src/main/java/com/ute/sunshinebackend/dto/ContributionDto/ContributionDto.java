@@ -18,6 +18,7 @@ public class ContributionDto {
     private String moneyStatus;
     private List<ContributionArtifactDto> contributionArtifactDto;
     private String paymentType;
+    private String receiver;
     private Date createdAt;
 
     public ContributionDto() {
@@ -48,7 +49,7 @@ public class ContributionDto {
         this.contributionArtifactDto = contributionArtifactDto;
     }
 
-    public ContributionDto(String id, String nickname, String messages, String userName, String userEmail, String userPhone, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto, String paymentType, Date createdAt) {
+    public ContributionDto(String id, String nickname, String messages, String userName, String userEmail, String userPhone, String projectName, String projectType, Long contributionMoney, String moneyStatus, List<ContributionArtifactDto> contributionArtifactDto, String paymentType, String receiver, Date createdAt) {
         this.id = id;
         this.nickname = nickname;
         this.messages = messages;
@@ -61,6 +62,7 @@ public class ContributionDto {
         this.moneyStatus = moneyStatus;
         this.contributionArtifactDto = contributionArtifactDto;
         this.paymentType = paymentType;
+        this.receiver = receiver;
         this.createdAt = createdAt;
     }
 }
