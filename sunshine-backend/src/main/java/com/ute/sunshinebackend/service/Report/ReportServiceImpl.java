@@ -2,6 +2,8 @@ package com.ute.sunshinebackend.service.Report;
 
 import com.ute.sunshinebackend.dto.ProjectDto.UnionDto;
 import com.ute.sunshinebackend.dto.Report.ContributionReportDto;
+import com.ute.sunshinebackend.dto.Report.ContributionUserArtifactDto;
+import com.ute.sunshinebackend.dto.Report.ContributionUserDto;
 import com.ute.sunshinebackend.dto.Report.PaymentReportDto;
 import com.ute.sunshinebackend.repository.Report.ContributionReportRepository;
 import com.ute.sunshinebackend.repository.Report.PaymentReportRepository;
@@ -22,6 +24,43 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     PaymentReportRepository paymentReportRepository;
+
+    @Override
+    public ResponseEntity<List<ContributionUserDto>> listContributionsByUserId(Integer userId) {
+        List<ContributionUserDto> contributionUserDtos = new ArrayList<>();
+        List<Object []> result = contributionReportRepository.listContributionsByUserId(userId);
+
+        for(Object[] row : result){
+            ContributionUserDto contributionUserDto = new ContributionUserDto();
+            contributionUserDto.setId((String) row[0]);
+            contributionUserDto.setProjectName((String) row[1]);
+            contributionUserDto.setAmountMoney((BigDecimal) row[2]);
+            contributionUserDto.setStatus((String) row[3]);
+            contributionUserDto.setCreatedAt((Date) row[4]);
+
+            contributionUserDtos.add(contributionUserDto);
+        }
+        return new ResponseEntity<>(contributionUserDtos, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ContributionUserArtifactDto>> listContributionArtifactsByUserId(Integer userId) {
+        List<ContributionUserArtifactDto> contributionUserArtifactDtos = new ArrayList<>();
+        List<Object []> result = contributionReportRepository.listContributionArtifactsByUserId(userId);
+
+        for(Object[] row : result){
+            ContributionUserArtifactDto userArtifactDto = new ContributionUserArtifactDto();
+            userArtifactDto.setId((String) row[0]);
+            userArtifactDto.setProjectName((String) row[1]);
+            userArtifactDto.setArtifactName((String) row[2]);
+            userArtifactDto.setDonatedAmount((Integer) row[3]);
+            userArtifactDto.setStatus((String) row[4]);
+            userArtifactDto.setCreatedAt((Date) row[5]);
+
+            contributionUserArtifactDtos.add(userArtifactDto);
+        }
+        return new ResponseEntity<>(contributionUserArtifactDtos, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<List<ContributionReportDto>> listContributionsByProjectIdByDate(Integer projectId, String fromDate, String toDate) {

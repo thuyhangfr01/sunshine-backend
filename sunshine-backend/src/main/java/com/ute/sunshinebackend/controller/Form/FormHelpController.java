@@ -26,11 +26,11 @@ public class FormHelpController {
 //    public ResponseEntity<FormHelpDto> getFormHelpById(@PathVariable("id") long formId){
 //        return formHelpService.getFormHelpById(formId);
 //    }
-//
-//    @GetMapping("/formHelp/user/{id}")
-//    public ResponseEntity<List<FormHelpDto>> getFormHelpByUserId(@PathVariable("id") long userId){
-//        return formHelpService.getLatestFormHelpByUserId(userId);
-//    }
+
+    @GetMapping("/formHelp/user")
+            public ResponseEntity<List<FormHelpDto>> getLatestFormHelpByUserId(@RequestParam("fullName") String fullName){
+        return formHelpService.getLatestFormHelpByUserId(fullName);
+    }
 
     @PostMapping("/formHelp")
     public ResponseEntity<FormHelpCreatorDto> addFormHelp(@RequestBody FormHelpCreatorDto formHelpCreatorDto){

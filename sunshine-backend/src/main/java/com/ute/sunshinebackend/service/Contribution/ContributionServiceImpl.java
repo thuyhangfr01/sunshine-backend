@@ -307,6 +307,61 @@ public class ContributionServiceImpl implements ContributionService {
     }
 
     @Override
+    public ResponseEntity<ContributionImportDto> importContribution(ContributionImportDto contributionImportDto) {
+        //money
+        ContributionMoney contributionMoneyEntity = new ContributionMoney();
+        contributionMoneyEntity.setAmountMoney(contributionImportDto.getAmountMoney());
+        contributionMoneyEntity.setMcontributionStatus(contributionStatusRepository.findById(
+                        contributionImportDto.getStatusMoneyId())
+                .orElseThrow(() -> new ResourceNotFoundException("Status not found")));
+        contributionMoneyEntity = contributionMoneyRepository.save(contributionMoneyEntity);
+
+        //convert dto to entity
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        Contribution contributionEntity = modelMapper.map(contributionImportDto, Contribution.class);
+
+        //artifacts
+        List<ContributionArtifact> artifactsNew = new ArrayList<ContributionArtifact>();
+        List<ContributionArtifact> artifactCreator = contributionImportDto.getContributionArtifacts();
+        if(artifactCreator != null){
+            for(int i = 0; i < artifactCreator.size(); i++){
+                ContributionArtifact item = new ContributionArtifact();
+                item.setArtifactName(artifactCreator.get(i).getArtifactName());
+                item.setDonatedAmount(artifactCreator.get(i).getDonatedAmount());
+                item.setReceivedAmount(0L);
+                item.setCalculationUnit(artifactCreator.get(i).getCalculationUnit());
+                item.setContributionStatus(contributionStatusRepository.findById(
+                                contributionImportDto.getStatueArtifactId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Status not found")));
+
+                artifactsNew.add(item);
+            }
+            contributionEntity.addArtifact(artifactsNew);
+        }
+
+        //user
+        Optional<User> user = userRepository.findById(contributionImportDto.getUserId());
+
+        //project
+        Optional<Project> project = projectRepository.findById(contributionImportDto.getProjectId());
+
+        contributionEntity.setNickname(contributionImportDto.getNickname());
+        contributionEntity.setMessages(contributionImportDto.getMessages());
+        contributionEntity.setContributionMoney(contributionMoneyEntity);
+        contributionEntity.setUser(user.get());
+        contributionEntity.setProject(project.get());
+        contributionEntity.setPaymentType(contributionImportDto.getPaymentType());
+        contributionEntity.setReceiver(contributionImportDto.getReceiver());
+        contributionEntity.setCreatedAt(contributionImportDto.getCreatedAt());
+        contributionImportDto.setProjectName(project.get().getName());
+
+        //convert entity to dto
+        ContributionImportDto contributionDto = modelMapper.map(contributionRepository.save(contributionEntity), ContributionImportDto.class);
+
+        return new ResponseEntity<>(contributionDto, HttpStatus.CREATED);
+    }
+
+    @Override
     public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long id, ContributionMoneyUpdateDto contributionMoneyUpdateDto) {
         //convert dto to entity
         modelMapper.getConfiguration().setAmbiguityIgnored(true);

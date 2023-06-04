@@ -1,6 +1,7 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCustomListDto;
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
 import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
@@ -22,6 +23,8 @@ public interface ProjectService {
     public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto);
     public ResponseEntity<Boolean> deleteProject(Long id);
     public ResponseEntity<TotalMoneyDto> getTotalMoneyByProjectId(Long projectId);
+
+    public ResponseEntity<List<ProjectCustomListDto>> getAllProject();
 
 //    public ResponseEntity<Page<ProjectListDto>> getTop5LatestProjects(Pageable pageable);
 }

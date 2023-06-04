@@ -1,8 +1,10 @@
 package com.ute.sunshinebackend.service.Project;
 
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCustomListDto;
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
 import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
+import com.ute.sunshinebackend.dto.Report.ContributionUserDto;
 import com.ute.sunshinebackend.entity.Project.Project;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Project.ProjectMoneyRepository;
@@ -18,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -242,11 +246,36 @@ public class ProjectServiceImpl implements ProjectService {
                     .orElseThrow(() -> new ResourceNotFoundException("Project id " + projectId + "not found"));
 
          if (projectRepository.getTotalMoneyByProjectId(project.getId()) == null){
-            totalMoneyDto.setTotalMoney(0);
+            totalMoneyDto.setTotalMoney(BigDecimal.valueOf(0));
         } else {
             totalMoneyDto.setTotalMoney(projectRepository.getTotalMoneyByProjectId(project.getId()));
         }
         return new ResponseEntity<>(totalMoneyDto, HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseEntity<List<ProjectCustomListDto>> getAllProject() {
+        List<ProjectCustomListDto> projectCustomListDtos = new ArrayList<>();
+        List<Object []> result = projectRepository.getAllProject();
+
+        for(Object[] row : result){
+            ProjectCustomListDto projectCustomListDto = new ProjectCustomListDto();
+            projectCustomListDto.setId((Integer) row[0]);
+            projectCustomListDto.setName((String) row[1]);
+            projectCustomListDto.setDetails((String) row[2]);
+            projectCustomListDto.setMinMoney((BigDecimal) row[3]);
+            projectCustomListDto.setCreatedAt((Date) row[4]);
+
+//            BigDecimal revMoney = projectRepository.getTotalMoneyByProjectId((Integer) row[0]);
+//            BigDecimal minMoney = (BigDecimal) row[3];
+//            projectCustomListDto.setRevMoney(revMoney);
+//
+//            List imagesList = projectRepository.getImagesByProjectId((Integer) row[0]);
+//            projectCustomListDto.setImagesList(imagesList);
+
+            projectCustomListDtos.add(projectCustomListDto);
+        }
+        return new ResponseEntity<>(projectCustomListDtos, HttpStatus.OK);
     }
 }

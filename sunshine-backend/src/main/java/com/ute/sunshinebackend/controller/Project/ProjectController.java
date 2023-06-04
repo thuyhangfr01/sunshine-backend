@@ -1,6 +1,7 @@
 package com.ute.sunshinebackend.controller.Project;
 
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectCreatorDto;
+import com.ute.sunshinebackend.dto.ProjectDto.ProjectCustomListDto;
 import com.ute.sunshinebackend.dto.ProjectDto.ProjectNameDto;
 import com.ute.sunshinebackend.dto.ContributionDto.TotalMoneyDto;
 import com.ute.sunshinebackend.entity.Project.Project;
@@ -91,5 +92,10 @@ public class ProjectController {
     @GetMapping("/project/{id}/totalMoney")
     public ResponseEntity<TotalMoneyDto> getTotalMoneyByProjectId(@PathVariable("id") Long projectId){
         return projectService.getTotalMoneyByProjectId(projectId);
+    }
+
+    @GetMapping("/projectList")
+    public ResponseEntity<List<ProjectCustomListDto>> getAllProject (){
+        return projectService.getAllProject();
     }
 }

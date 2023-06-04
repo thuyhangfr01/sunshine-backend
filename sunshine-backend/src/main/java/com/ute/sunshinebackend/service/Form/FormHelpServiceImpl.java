@@ -75,27 +75,27 @@ public class FormHelpServiceImpl implements FormHelpService{
 //        return new ResponseEntity<>(formHelpDto, HttpStatus.OK);
 //    }
 //
-//    @Override
-//    public ResponseEntity<List<FormHelpDto>> getLatestFormHelpByUserId(Long userId) {
-//        List<FormHelp> formEntity = formHelpRepository.findByUserId(userId);
-//        List<FormHelpDto> formDto = new ArrayList<FormHelpDto>();
-//
-//        for(int i = 0; i < formEntity.size(); i++){
-//            FormHelpDto form = new FormHelpDto(
-//                    formEntity.get(i).getUser().getName(),
-//                    formEntity.get(i).getUser().getEmail(),
-//                    formEntity.get(i).getUser().getPhone(),
-//                    formEntity.get(i).getTitle(),
-//                    formEntity.get(i).getContents(),
-//                    formEntity.get(i).getFormStatus().getName(),
-//                    formEntity.get(i).getCreatedAt(),
-//                    formEntity.get(i).getFormImages()
-//            );
-//
-//            formDto.add(form);
-//        }
-//        return new ResponseEntity<>(formDto, HttpStatus.OK);
-//    }
+    @Override
+    public ResponseEntity<List<FormHelpDto>> getLatestFormHelpByUserId(String fullName) {
+        List<FormHelpDto> listDto = new ArrayList<FormHelpDto>();
+        List<FormHelp> list = formHelpRepository.findByUserId(fullName);
+        for (int i = 0; i < list.size(); i++) {
+            FormHelpDto formHelpDto = new FormHelpDto();
+
+            formHelpDto.setId(list.get(i).getId());
+            formHelpDto.setFullName(list.get(i).getFullName());
+            formHelpDto.setEmail(list.get(i).getEmail());
+            formHelpDto.setPhone(list.get(i).getPhone());
+            formHelpDto.setTitle(list.get(i).getTitle());
+            formHelpDto.setContents(list.get(i).getContents());
+            formHelpDto.setCreatedAt(list.get(i).getCreatedAt());
+            formHelpDto.setStatusName(list.get(i).getFormStatus().getName());
+            formHelpDto.setFormImageList(list.get(i).getFormImages());
+
+            listDto.add(formHelpDto);
+        }
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<FormHelpCreatorDto> addFormHelp(FormHelpCreatorDto formHelpCreatorDto) {

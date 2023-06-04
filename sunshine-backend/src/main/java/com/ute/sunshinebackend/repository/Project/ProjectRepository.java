@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -28,8 +29,18 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "from contributions as a, contribution_money as b, projects as c " +
             "where a.id_contribution_money = b.id and a.id_project = c.id and b.id_status = 3 and c.id = :projectId " +
             "group by c.id", nativeQuery = true)
-    Long getTotalMoneyByProjectId(long projectId);
+    BigDecimal getTotalMoneyByProjectId(long projectId);
 
+    @Query(value =
+            "SELECT p.id, p.name, p.details, pm.min_money, p.created_at " +
+            "FROM projects as p, project_money as pm " +
+            "WHERE p.id = pm.id_project", nativeQuery = true)
+    List getAllProject();
 
+    @Query(value =
+            "SELECT pi.name " +
+                    "FROM projects as p, project_images as pi " +
+                    "WHERE p.id = pi.id_project and pi.id = :projectId", nativeQuery = true)
+    List getImagesByProjectId(Integer projectId);
 
 }
