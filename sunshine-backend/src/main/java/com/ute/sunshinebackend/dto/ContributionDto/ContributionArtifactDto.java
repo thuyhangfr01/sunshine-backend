@@ -9,14 +9,16 @@ import javax.persistence.Id;
 @Data
 public class ContributionArtifactDto {
     private String contributionId;
+    private Integer artifactId;
     private String artifactName;
-    private Long donatedAmount;
-    private Long receivedAmount;
+    private Integer donatedAmount;
+    private Integer receivedAmount;
     private String calculationUnit;
     private String artifactStatus;
 
-    public ContributionArtifactDto(String contributionId, String artifactName, Long donatedAmount, Long receivedAmount, String calculationUnit, String artifactStatus) {
+    public ContributionArtifactDto(String contributionId, Integer artifactId, String artifactName, Integer donatedAmount, Integer receivedAmount, String calculationUnit, String artifactStatus) {
         this.contributionId = contributionId;
+        this.artifactId = artifactId;
         this.artifactName = artifactName;
         this.donatedAmount = donatedAmount;
         this.receivedAmount = receivedAmount;

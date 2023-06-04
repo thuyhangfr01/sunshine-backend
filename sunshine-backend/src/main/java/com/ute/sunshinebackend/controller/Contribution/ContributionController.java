@@ -1,9 +1,6 @@
 package com.ute.sunshinebackend.controller.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionDto;
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionMoneyUpdateDto;
-import com.ute.sunshinebackend.dto.ContributionDto.StatusMoneyDto;
+import com.ute.sunshinebackend.dto.ContributionDto.*;
 import com.ute.sunshinebackend.service.Contribution.ContributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +48,11 @@ public class ContributionController {
     @PostMapping("/contribution")
     private ResponseEntity<ContributionCreatorDto> addContribution(@RequestBody ContributionCreatorDto contributionCreatorDto){
         return contributionService.addContribution(contributionCreatorDto);
+    }
+
+    @PostMapping("/contributionImport")
+    private ResponseEntity<ContributionImportDto> importContribution(@RequestBody ContributionImportDto contributionImportDto){
+        return contributionService.importContribution(contributionImportDto);
     }
 
     @PutMapping("/contribution/amountMoney/{mId}")

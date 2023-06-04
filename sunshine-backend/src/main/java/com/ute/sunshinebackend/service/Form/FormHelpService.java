@@ -14,7 +14,7 @@ public interface FormHelpService {
 //    public ResponseEntity<FormHelpDto> getFormHelpById(Long formId);
 //
 //    //get all latest form by user id
-//    public ResponseEntity<List<FormHelpDto>> getLatestFormHelpByUserId(Long userId);
+    public ResponseEntity<List<FormHelpDto>> getLatestFormHelpByUserId(String fullName);
 
     //create new form help
     public ResponseEntity<FormHelpCreatorDto> addFormHelp(FormHelpCreatorDto formHelpCreatorDto);

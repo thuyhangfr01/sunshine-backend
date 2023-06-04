@@ -2,6 +2,8 @@ package com.ute.sunshinebackend.controller.Report;
 
 import com.ute.sunshinebackend.dto.ProjectDto.UnionDto;
 import com.ute.sunshinebackend.dto.Report.ContributionReportDto;
+import com.ute.sunshinebackend.dto.Report.ContributionUserArtifactDto;
+import com.ute.sunshinebackend.dto.Report.ContributionUserDto;
 import com.ute.sunshinebackend.dto.Report.PaymentReportDto;
 import com.ute.sunshinebackend.entity.Project.ProjectArtifact;
 import com.ute.sunshinebackend.service.Report.ReportService;
@@ -23,6 +25,16 @@ public class ReportController {
                                                                                           @RequestParam(required = false) String fromDate,
                                                                                           @RequestParam(required = false) String toDate){
         return reportService.listContributionsByProjectIdByDate(projectId, fromDate, toDate);
+    }
+
+    @GetMapping("/reports/contributions/artifacts/user")
+    public ResponseEntity<List<ContributionUserArtifactDto>> listContributionArtifactsByUserId(@RequestParam(required = false) Integer userId){
+        return reportService.listContributionArtifactsByUserId(userId);
+    }
+
+    @GetMapping("/reports/contributions/user")
+    public ResponseEntity<List<ContributionUserDto>> listContributionsByUserId(@RequestParam(required = false) Integer userId){
+        return reportService.listContributionsByUserId(userId);
     }
 
     @GetMapping("/reports/payments")

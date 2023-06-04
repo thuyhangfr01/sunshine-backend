@@ -1,9 +1,12 @@
 package com.ute.sunshinebackend.service.Contribution;
 
 import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactCreatorDto;
+import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactListDto;
 import com.ute.sunshinebackend.dto.ContributionDto.ContributionArtifactDto;
+import com.ute.sunshinebackend.dto.ContributionDto.StatusArtifactDto;
 import com.ute.sunshinebackend.entity.Contribution.Contribution;
 import com.ute.sunshinebackend.entity.Contribution.ContributionArtifact;
+import com.ute.sunshinebackend.entity.Contribution.ContributionMoney;
 import com.ute.sunshinebackend.exception.ResourceNotFoundException;
 import com.ute.sunshinebackend.repository.Contribution.ContributionArtifactRepository;
 import com.ute.sunshinebackend.repository.Contribution.ContributionRepository;
@@ -30,29 +33,57 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
     ContributionStatusRepository contributionStatusRepository;
 
     @Override
-    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(String contributionId) {
-        try{
-            List<ContributionArtifactDto> contributionArtifactListDto = new ArrayList<ContributionArtifactDto>();
-            //check xem co ton tai contributionId khong?
-            Boolean checkId  = contributionRepository.existsById(contributionId);
-            if(checkId){
-                Optional<Contribution> contribution = contributionRepository.findById(contributionId);
-                List<ContributionArtifact> contributionArtifactList = contribution.get().getContributionArtifacts();
-                for(int i = 0; i < contributionArtifactList.size(); i++){
-                    ContributionArtifactDto contributionArtifactDto = new ContributionArtifactDto();
-                    contributionArtifactDto.setArtifactName(contributionArtifactList.get(i).getArtifactName());
-                    contributionArtifactDto.setDonatedAmount(contributionArtifactList.get(i).getDonatedAmount());
-                    contributionArtifactDto.setReceivedAmount(contributionArtifactList.get(i).getReceivedAmount());
-                    contributionArtifactDto.setCalculationUnit(contributionArtifactList.get(i).getCalculationUnit());
-                    contributionArtifactDto.setArtifactStatus(contributionArtifactList.get(i).getContributionStatus().getName());
-                    contributionArtifactDto.setContributionId(contributionId);
-                    contributionArtifactListDto.add(contributionArtifactDto);
-                }
-            }
-            return new ResponseEntity<>(contributionArtifactListDto, HttpStatus.OK);
-        } catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<List<ContributionArtifactListDto>> getContributionArtifacts() {
+        List<ContributionArtifactListDto> contributionArtifactListDtos = new ArrayList<>();
+        List<Object []> result = contributionArtifactRepository.listContributionArtifacts();
+
+        for(Object[] row : result){
+            ContributionArtifactListDto contributionArtifactListDto = new ContributionArtifactListDto();
+            contributionArtifactListDto.setId((String) row[0]);
+            contributionArtifactListDto.setUserName((String) row[1]);
+            contributionArtifactListDto.setProjectName((String) row[2]);
+            contributionArtifactListDto.setCreatedAt((Date) row[3]);
+
+            contributionArtifactListDtos.add(contributionArtifactListDto);
         }
+        return new ResponseEntity<>(contributionArtifactListDtos, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ContributionArtifactListDto>> getContributionArtifactsByUserId(Long userId) {
+        List<ContributionArtifactListDto> contributionArtifactListDtos = new ArrayList<>();
+        List<Object []> result = contributionArtifactRepository.listContributionArtifactsByUserId(userId);
+
+        for(Object[] row : result){
+            ContributionArtifactListDto contributionArtifactListDto = new ContributionArtifactListDto();
+            contributionArtifactListDto.setId((String) row[0]);
+            contributionArtifactListDto.setUserName((String) row[1]);
+            contributionArtifactListDto.setProjectName((String) row[2]);
+            contributionArtifactListDto.setCreatedAt((Date) row[3]);
+
+            contributionArtifactListDtos.add(contributionArtifactListDto);
+        }
+        return new ResponseEntity<>(contributionArtifactListDtos, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ContributionArtifactDto>> getArtifactsByContributionId(String contributionId) {
+        List<ContributionArtifactDto> contributionArtifactDtos = new ArrayList<>();
+        List<Object []> result = contributionArtifactRepository.listArtifactsByContributionId(contributionId);
+
+        for(Object[] row : result){
+            ContributionArtifactDto contributionArtifactDto = new ContributionArtifactDto();
+            contributionArtifactDto.setContributionId((String) row[0]);
+            contributionArtifactDto.setArtifactId((Integer) row[1]);
+            contributionArtifactDto.setArtifactName((String) row[2]);
+            contributionArtifactDto.setDonatedAmount((Integer) row[3]);
+            contributionArtifactDto.setReceivedAmount((Integer) row[4]);
+            contributionArtifactDto.setCalculationUnit((String) row[5]);
+            contributionArtifactDto.setArtifactStatus((String) row[6]);
+
+            contributionArtifactDtos.add(contributionArtifactDto);
+        }
+        return new ResponseEntity<>(contributionArtifactDtos, HttpStatus.OK);
     }
 
     @Override
@@ -84,28 +115,49 @@ public class ContributionArtifactServiceImpl implements ContributionArtifactServ
 //        }
     }
 
+//    @Override
+//    public ResponseEntity<ContributionArtifact> updateArtifactById(Long artifactId, ContributionArtifact contributionArtifact) {
+//        try{
+//            //check artifact id co ton tai khong
+//            ContributionArtifact artifact = contributionArtifactRepository.findById(artifactId)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Not found artifact id"));
+//
+//            artifact.setId(contributionArtifact.getId());
+//            artifact.setArtifactName(contributionArtifact.getArtifactName());
+//            artifact.setDonatedAmount(contributionArtifact.getDonatedAmount());
+//            artifact.setReceivedAmount(contributionArtifact.getReceivedAmount());
+//            artifact.setCalculationUnit(contributionArtifact.getCalculationUnit());
+//            contributionStatusRepository.findById(contributionArtifact.getContributionStatus().getId()).map(contributionStatus -> {
+//                artifact.setContributionStatus(contributionStatus);
+//
+//                return contributionArtifactRepository.save(artifact);
+//            }).orElseThrow(() -> new ResourceNotFoundException("Not found status with id"));
+//
+//            return new ResponseEntity<>(artifact, HttpStatus.CREATED);
+//        } catch(Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//    }
+
     @Override
-    public ResponseEntity<ContributionArtifact> updateArtifactById(Long artifactId, ContributionArtifact contributionArtifact) {
-        try{
-            //check artifact id co ton tai khong
-            ContributionArtifact artifact = contributionArtifactRepository.findById(artifactId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found artifact id"));
+    public ResponseEntity<StatusArtifactDto> updateArtifactById(Long artifactId, StatusArtifactDto statusArtifactDto) {
+        //check co ton tai contribution money id hay khong
+        ContributionArtifact contributionArtifact = contributionArtifactRepository.findById(artifactId)
+                .orElseThrow(() -> new ResourceNotFoundException("Contribution artifact id not found"));
 
-            artifact.setId(contributionArtifact.getId());
-            artifact.setArtifactName(contributionArtifact.getArtifactName());
-            artifact.setDonatedAmount(contributionArtifact.getDonatedAmount());
-            artifact.setReceivedAmount(contributionArtifact.getReceivedAmount());
-            artifact.setCalculationUnit(contributionArtifact.getCalculationUnit());
-            contributionStatusRepository.findById(contributionArtifact.getContributionStatus().getId()).map(contributionStatus -> {
-                artifact.setContributionStatus(contributionStatus);
+        contributionStatusRepository.findById(statusArtifactDto.getStatusId()).map(contributionStatus1 -> {
+            contributionArtifact.setContributionStatus(contributionStatus1);
 
-                return contributionArtifactRepository.save(artifact);
-            }).orElseThrow(() -> new ResourceNotFoundException("Not found status with id"));
+            return contributionArtifact;
+        }).orElseThrow(() -> new ResourceNotFoundException("Not status with id"));
 
-            return new ResponseEntity<>(artifact, HttpStatus.CREATED);
-        } catch(Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        statusArtifactDto.setArtifactId(artifactId);
+        statusArtifactDto.setContributionStatus(contributionArtifact.getContributionStatus());
+        contributionArtifact.setReceivedAmount(statusArtifactDto.getReceivedAmount());
+
+        contributionArtifactRepository.save(contributionArtifact);
+
+        return new ResponseEntity<>(statusArtifactDto, HttpStatus.OK);
     }
 
     @Override

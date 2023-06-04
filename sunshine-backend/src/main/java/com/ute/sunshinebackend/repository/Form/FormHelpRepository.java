@@ -10,6 +10,6 @@ import java.util.*;
 public interface FormHelpRepository extends JpaRepository<FormHelp, Long> {
     List<FormHelp> findByOrderByCreatedAtDesc();
 
-    @Query(value = "SELECT f.* FROM form_help f, users u WHERE f.id_user = u.id and f.id_user = :userId", nativeQuery = true)
-    List<FormHelp> findByUserId(Long userId);
+    @Query(value = "SELECT f.* FROM form_help f WHERE f.full_name = :fullName ORDER BY f.created_at DESC", nativeQuery = true)
+    List<FormHelp> findByUserId(String fullName);
 }

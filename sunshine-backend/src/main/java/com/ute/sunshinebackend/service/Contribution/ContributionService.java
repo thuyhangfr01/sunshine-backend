@@ -1,9 +1,6 @@
 package com.ute.sunshinebackend.service.Contribution;
 
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionCreatorDto;
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionDto;
-import com.ute.sunshinebackend.dto.ContributionDto.ContributionMoneyUpdateDto;
-import com.ute.sunshinebackend.dto.ContributionDto.StatusMoneyDto;
+import com.ute.sunshinebackend.dto.ContributionDto.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -28,6 +25,9 @@ public interface ContributionService {
 
     //create new contribution
     public ResponseEntity<ContributionCreatorDto> addContribution(ContributionCreatorDto contributionCreatorDto);
+
+    //create new contribution
+    public ResponseEntity<ContributionImportDto> importContribution(ContributionImportDto contributionImportDto);
 
     //update amount money
     public ResponseEntity<ContributionMoneyUpdateDto> updateMoneyById(Long id, ContributionMoneyUpdateDto contributionMoneyUpdateDto);
