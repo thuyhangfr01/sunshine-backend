@@ -43,4 +43,25 @@ public class ReportController {
                                                                                 @RequestParam(required = false) String toDate){
         return reportService.listPaymentsByProjectIdByDate(projectId, fromDate, toDate);
     }
+
+    @GetMapping("/statistic/totalContributions")
+    public ResponseEntity<?> totalContributions(){
+        return reportService.totalContributions();
+    }
+
+    @GetMapping("/statistic/totalProjects")
+    public ResponseEntity<?> totalProjects(){
+        return reportService.totalProjects();
+    }
+
+    @GetMapping("/statistic/totalForms")
+    public ResponseEntity<?> totalForms(){
+        return reportService.totalForms();
+    }
+
+    @GetMapping("/statistic/totalMoney")
+    public ResponseEntity<?> totalMoney(){
+        return reportService.totalMoney();
+    }
+
 }

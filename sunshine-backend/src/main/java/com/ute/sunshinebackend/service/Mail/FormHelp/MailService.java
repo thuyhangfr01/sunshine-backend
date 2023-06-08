@@ -44,7 +44,7 @@ public class MailService {
             message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress(_email)});
 
             message.setFrom(new InternetAddress(email));
-            message.setSubject("Qũy từ thiện Sunshine - Phản hồi đơn yêu cầu hỗ trợ");
+            message.setSubject("Quy tu thien Sunshine - Phan hoi don yeu cau ho tro");
             message.setContent(thymeleafService.getContent(fullName, title, status), CONTENT_TYPE_TEXT_HTML);
             Transport.send(message);
         } catch (MessagingException e) {

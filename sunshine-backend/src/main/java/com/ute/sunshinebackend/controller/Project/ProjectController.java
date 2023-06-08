@@ -66,6 +66,7 @@ public class ProjectController {
         return projectService.getTop5LatestProject(PageRequest.of(0, 5));
     }
 
+
     @GetMapping("/latestProject")
     public ResponseEntity<List<Project>> getLatestProject(@RequestParam(required = false) String name){
         return projectService.getLatestProject(name);

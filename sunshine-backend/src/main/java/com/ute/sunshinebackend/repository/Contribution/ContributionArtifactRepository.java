@@ -14,7 +14,8 @@ public interface ContributionArtifactRepository extends JpaRepository<Contributi
                     "FROM contributions as c, contribution_artifacts as ca, projects as p, users as u " +
                     "WHERE c.id = ca.id_contribution and c.id_project = p.id and c.id_user = u.id " +
                     "   and c.id IN (select ca1.id_contribution from contribution_artifacts as ca1) " +
-                    "GROUP BY c.id, u.name, p.name, c.created_at",
+                    "GROUP BY c.id, u.name, p.name, c.created_at " +
+                    "ORDER BY c.created_at DESC",
             nativeQuery = true)
     List listContributionArtifacts();
 
@@ -23,7 +24,8 @@ public interface ContributionArtifactRepository extends JpaRepository<Contributi
                     "FROM contributions as c, contribution_artifacts as ca, projects as p, users as u " +
                     "WHERE c.id = ca.id_contribution and c.id_project = p.id and c.id_user = u.id " +
                     "   and c.id IN (select ca1.id_contribution from contribution_artifacts as ca1) and c.id_user = :userId " +
-                    "GROUP BY c.id, u.name, p.name, c.created_at",
+                    "GROUP BY c.id, u.name, p.name, c.created_at " +
+                    "ORDER BY c.created_at DESC",
             nativeQuery = true)
     List listContributionArtifactsByUserId(Long userId);
 

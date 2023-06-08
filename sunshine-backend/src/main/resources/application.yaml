@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: sqladmin@sunshinedb
+    username: sqladmin@sunshineutedb
     password: Thuyhang2001
-    url: jdbc:sqlserver://sunshinedb.database.windows.net:1433;database=sunshinedb;user=sqladmin@sunshinedb;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    url: jdbc:sqlserver://sunshineutedb.database.windows.net:1433;database=sunshine_ute;user=sqladmin@sunshineutedb;password=Thuyhang2001;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     show-sql: 'true'
     hibernate:
       ddl-auto: update

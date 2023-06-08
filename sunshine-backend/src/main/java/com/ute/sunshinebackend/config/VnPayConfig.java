@@ -1,5 +1,8 @@
 package com.ute.sunshinebackend.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,14 +17,19 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
+
 public class VnPayConfig {
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";
+    @Value("${vn.pay.endpoint}")
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    @Value("${vn.pay.returnUrl}")
     public static String vnp_Returnurl = "http://localhost:3000/payment";
+    @Value("${vn.pay.accessKey}")
     public static String vnp_TmnCode = "K6UA0A76";
+    @Value("${vn.pay.secretKey}")
     public static String vnp_HashSecret = "LTUXCOYYMFHPUIKFKPANFVZOKKGTQJBK";
-    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+//    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
         String digest = null;

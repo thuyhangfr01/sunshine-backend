@@ -50,7 +50,7 @@ public class FormVolunteerServiceImpl implements FormVolunteerService{
                 formVolunteerDto.setProjectName(list.get(i).getProject().getName());
                 formVolunteerDto.setStatusName(list.get(i).getFormStatus().getName());
                 formVolunteerDto.setCreatedAt(list.get(i).getCreatedAt());
-
+                formVolunteerDto.setId(list.get(i).getId());
                 listDto.add(formVolunteerDto);
             }
             return new ResponseEntity<>(listDto, HttpStatus.OK);

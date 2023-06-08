@@ -44,7 +44,7 @@ public class MailVolunteerService {
             message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress(_email)});
 
             message.setFrom(new InternetAddress(email));
-            message.setSubject("Qũy từ thiện Sunshine - Phản hồi đơn đăng ký tình nguyện viên");
+            message.setSubject("Quy tu thien Sunshine - Phan hoi don dang ky tinh nguyen vien");
             message.setContent(thymeleafVolunteerService.getContent(fullName, projectName, status), CONTENT_TYPE_TEXT_HTML);
             Transport.send(message);
         } catch (MessagingException e) {

@@ -13,4 +13,8 @@ public interface ReportService {
     public ResponseEntity<List<ContributionUserArtifactDto>> listContributionArtifactsByUserId(Integer userId);
     public ResponseEntity<List<ContributionReportDto>> listContributionsByProjectIdByDate(Integer projectId, String fromDate, String toDate);
     public ResponseEntity<List<PaymentReportDto>> listPaymentsByProjectIdByDate(Integer projectId, String fromDate, String toDate);
+    public ResponseEntity<?> totalContributions();
+    public ResponseEntity<?> totalProjects();
+    public ResponseEntity<?> totalForms();
+    public ResponseEntity<?> totalMoney();
 }

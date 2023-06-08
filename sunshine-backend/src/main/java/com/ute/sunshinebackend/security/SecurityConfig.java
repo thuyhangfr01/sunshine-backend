@@ -74,6 +74,8 @@ public class SecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/hello").permitAll()
+                .antMatchers("/topic/greetings").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

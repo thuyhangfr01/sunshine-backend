@@ -197,4 +197,24 @@ public class ReportServiceImpl implements ReportService{
         }
         return new ResponseEntity<>(paymentReportDtos, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<?> totalContributions() {
+        return new ResponseEntity<>(contributionReportRepository.totalContributions(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> totalProjects() {
+        return new ResponseEntity<>(contributionReportRepository.totalProjects(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> totalForms() {
+        return new ResponseEntity<>(contributionReportRepository.totalForms(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> totalMoney() {
+        return new ResponseEntity<>(contributionReportRepository.totalMoney(), HttpStatus.OK);
+    }
 }

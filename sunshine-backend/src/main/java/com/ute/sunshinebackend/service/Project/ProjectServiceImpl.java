@@ -13,6 +13,8 @@ import com.ute.sunshinebackend.repository.Project.ProjectStatusRepository;
 import com.ute.sunshinebackend.repository.Project.ProjectTypeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ModelMapper modelMapper;
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<List<ProjectNameDto>> getListProjectName() {
         List<Project> project = projectRepository.findAll();
@@ -62,7 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return new ResponseEntity<>(project.get(), HttpStatus.OK);
     }
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<Map<String, Object>> getAll(String name, int page, int size) {
         try {
@@ -88,13 +90,13 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<List<Project>> getAllProjects() {
         List<Project> projects = projectRepository.findAll();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<Map<String, Object>> getProjectsByTypeId(Long idType, int page, int size) {
         try {
@@ -117,7 +119,7 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<Map<String, Object>> getProjectsByStatusId(Long idStatus, int page, int size) {
         try {
@@ -140,16 +142,17 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<Page<Project>> getTop5LatestProject(Pageable pageable) {
         Page<Project> projects = projectRepository.findByOrderByCreatedAtDesc(pageable);
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
+    @Cacheable(value = "myCache")
     @Override
     public ResponseEntity<List<Project>> getLatestProject(String name) {
-        try {
+
             List<Project> projects = new ArrayList<Project>();
 
             if (name == null)
@@ -158,11 +161,10 @@ public class ProjectServiceImpl implements ProjectService {
                 projectRepository.findByNameContainingOrderByCreatedAtDesc(name).forEach(projects::add);
 
             return new ResponseEntity<>(projects, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 
+    @CacheEvict(value = "myCache", allEntries = true)
     @Override
     public ResponseEntity<ProjectCreatorDto> addProject(ProjectCreatorDto projectCreatorDtoRequest) {
         try{
@@ -190,7 +192,7 @@ public class ProjectServiceImpl implements ProjectService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @CacheEvict(value = "myCache", allEntries = true)
     @Override
     public ResponseEntity<ProjectCreatorDto> updateProject(Long id, ProjectCreatorDto projectCreatorDto) {
         try{
@@ -232,7 +234,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-
+    @CacheEvict(value = "myCache", allEntries = true)
     @Override
     public ResponseEntity<Boolean> deleteProject(Long id) {
         projectRepository.deleteById(id);
