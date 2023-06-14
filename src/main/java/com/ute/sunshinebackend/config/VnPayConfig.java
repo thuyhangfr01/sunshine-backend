@@ -21,14 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 public class VnPayConfig {
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";
-    @Value("${vn.pay.endpoint}")
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    @Value("${vn.pay.returnUrl}")
-    public static String vnp_Returnurl = "http://localhost:3000/payment";
-    @Value("${vn.pay.accessKey}")
-    public static String vnp_TmnCode = "K6UA0A76";
-    @Value("${vn.pay.secretKey}")
-    public static String vnp_HashSecret = "LTUXCOYYMFHPUIKFKPANFVZOKKGTQJBK";
+    @Value("${vnp.url}")
+    public static String vnp_PayUrl;
+    @Value("${vnp.returnUrl}")
+    public static String vnp_Returnurl;
+    @Value("${vnp.tmnCode}")
+    public static String vnp_TmnCode ;
+    @Value("${vnp.hashSecret}")
+    public static String vnp_HashSecret;
 //    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
